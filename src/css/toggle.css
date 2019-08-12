@@ -1,0 +1,11 @@
+
+.ToggleClass button{
+    margin-right: 5px;
+    font-size: 12px;
+}
+div #search-bar-0{
+    width: 500px;
+}
+div #search-bar-0:focus{
+    background-color:#BFDCD8;
+}

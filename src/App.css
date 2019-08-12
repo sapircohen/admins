@@ -31,3 +31,7 @@
     transform: rotate(360deg);
   }
 }
+.dataTable{
+  direction:'rtl';
+  text-align: right;
+}
