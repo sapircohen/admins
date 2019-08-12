@@ -4,7 +4,6 @@ import { withRouter,Route,Switch } from "react-router-dom";
 import LoginPage from './Components/LoginPage';
 import AdminPage from './Components/AdminPage';
 import ChangeData from './Components/ChangeDataScreen';
-import BigAdmin from './Components/BigAdminPage';
 import InstitudePage from './Components/Institude';
 import GroupsCreation from './Components/CreateGroups';
 
@@ -13,6 +12,8 @@ import firebase from 'firebase';
 import 'firebase/storage';
 
 import { FirebaseProdConfig } from './Keys/APIkeys';
+import Dashboard from './Components/BigAdminDashboard';
+import SmallDashboard from './Components/SmallAdminDashboard';
 //import { FirebaseTestConfig } from './Keys/APIkeys';
 
 firebase.initializeApp(FirebaseProdConfig);
@@ -26,9 +27,10 @@ function App(props) {
       <Route path='/' exact component={LoginPage}/>
       <Route path='/projectsData' component={AdminPage}/>
       <Route path='/projectsChangeData' component={ChangeData}/>
-      <Route path='/BigAdminPage' component={BigAdmin}/>
       <Route path='/InstitudePage' component={InstitudePage}/>
+      <Route path='/BigAdminDashboard' component={Dashboard}/>
       <Route path='/CreateGroups' component={GroupsCreation}/>
+      <Route path='/smallAdminDashboard' component={SmallDashboard}/>
     </Switch>
   );
 }

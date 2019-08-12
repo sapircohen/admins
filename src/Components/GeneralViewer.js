@@ -59,10 +59,12 @@ export default class GeneralViewer extends React.Component{
                                     {
                                         (this.props.projectDetails.Advisor)&&
                                         (
+                                            this.props.projectDetails.Advisor.length?(
                                             this.props.projectDetails.Advisor.length===1?
                                             <p>מנחה:</p>
                                             :
                                             <p>מנחים:</p>
+                                            ):<p>מנחים:</p>
                                         )
                                     }
                                 </Col>

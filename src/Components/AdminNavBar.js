@@ -29,7 +29,7 @@ render() {
               <MDBCollapse isOpen={this.state.collapse1} navbar>
                 <MDBNavbarNav style={{direction:'rtl',textAlign:'right'}} bottom>
                   <MDBNavItem >
-                    <Nav.Link href="#/FacultiesPage">דשבורד</Nav.Link>
+                    <Nav.Link href="#/BigAdminDashboard">דשבורד</Nav.Link>
                   </MDBNavItem>
                   <MDBNavItem >
                     <Nav.Link href="#/InstitudePage">מוסדות</Nav.Link>
