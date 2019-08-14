@@ -33,9 +33,8 @@ export default class SmallDashboard extends React.Component{
                 let counter = 0;
                 snapshot.forEach((project)=>{
                     let s = project.val().Year;
-                    
                     if (project.val().Year!==undefined && project.val().Year===y && project.val().Faculty===this.state.faculty && project.val().Department===this.state.department) {
-                       
+
                         console.log(s)
                          counter++;
                     }
