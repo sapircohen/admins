@@ -9,8 +9,11 @@ export default class TreeEditorJson extends React.Component{
         isIS:false,
         isBS:false,
     }
+    SaveData=()=>{
+
+    }
     componentDidUpdate(){
-        console.log(this.props.treeData)
+      localStorage.setItem('dataToRestore',JSON.stringify(this.props.treeData))
     }
     render(){  
         return (
@@ -26,11 +29,11 @@ export default class TreeEditorJson extends React.Component{
                 </Container>
               </Modal.Body>  
               <Modal.Footer style={{justifyContent:'space-between'}}>
-                <Col sm='4'></Col>
-                <Col sm='4' style={{textAlign:'center'}}>
+                <Col ></Col>
+                <Col style={{textAlign:'center'}}>
                     <Button onClick={this.props.close} variant="warning">סגירה</Button>
                 </Col>
-                <Col sm='4'></Col>
+                <Col ></Col>
               </Modal.Footer>
             </Modal>
           );

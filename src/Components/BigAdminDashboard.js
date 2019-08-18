@@ -114,12 +114,6 @@ export default class Dashboard extends React.Component{
                     <Col>
                         <KPI title='מספר הפרויקטים באתר' kpi={this.state.projectsCount}/>
                     </Col>
-                    <Col >
-                        <KPI/>
-                    </Col>
-                    <Col >
-                        <KPI/>
-                    </Col>
                 </Row>
                 <Row style={{marginTop:'1%',textAlign:'-webkit-center'}}>
                     <Col >
@@ -128,8 +122,8 @@ export default class Dashboard extends React.Component{
                         <RPSPieChart data={this.state.projectFacultyPie}/>
                     </Col>
                 </Row>
-                <Row style={{marginTop:'1%',textAlign:'-webkit-center'}}>
-                    <Col >
+                {/* <Row style={{marginTop:'1%',textAlign:'-webkit-center'}}> */}
+                    {/* <Col >
                         <SmallHeaderForm title={'מספר פרויקטים לפי מחלקות'} />
                         <BarGraph/>
                     </Col>
@@ -137,7 +131,7 @@ export default class Dashboard extends React.Component{
                         <SmallHeaderForm title={'מספר פרויקטים לפי מחלקות'} />
                         <BarGraph/>
                     </Col>
-                </Row>
+                </Row> */}
             </div>
         )
     }

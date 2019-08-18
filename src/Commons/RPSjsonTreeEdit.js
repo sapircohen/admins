@@ -5,69 +5,77 @@ import {
     JsonTree,
 } from 'react-editable-json-tree';
 import Button from 'react-bootstrap/Button';
-import SAlert from './SAlert';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 export default class RPSEditTree extends React.Component{
-    state={
-        data:{},
-        resotreDate:{},
-        alertIcon:'info',
-        alertShow:false,
-        alertTitle:'Change data?',
-        alertText:'are u sure?',
-        remove:false
+    constructor(props){
+        super(props);
+        this.state={
+            data:this.props.treeData,
+            alertIcon:'info',
+            alertShow:false,
+            alertTitle:'Change data?',
+            alertText:'are u sure?',
+        }
     }
-    componentDidMount(){
-        this.setState({data:this.props.treeData,resotreDate:this.props.treeData})
+    onFullyUpdate(newJson) {
+        this.setState({
+            data: newJson
+        });      
     }
-    // BeforeRemove = (event)=>{
-    //     event.preventDefault();
-    //     this.setState({alertShow:true},()=>{
-    //         if (!this.state.remove) {
-    //             return;
-    //         }
+    RestoreData = ()=>{
+        this.setState({
+            data:JSON.parse(localStorage.getItem('dataToRestore'))
+        },()=>{
+            console.log(this.state.data);
+        })
+    }
+    beforeRemoveAction = (key, keyPath, deep, oldValue) => window.confirm('are u sure?') ? new Promise(resolve => resolve()):new Promise(reject => false)
+
+    SaveData = ()=>{
+       if( window.confirm('save data to firebase?')){
+           //save new json tree to firebase
+       }
+    }
+    // beforeUpdateAction(){
+    //     localStorage.setItem('dataOneStepBefore',JSON.stringify(this.state.data))
+    //     new Promise(resolve => resolve())
+    // }
+    // BackUp=()=>{
+    //     this.setState({
+    //         data:JSON.parse(localStorage.getItem('dataOneStepBefore'))
+    //     },()=>{
+    //         console.log(this.state.data);
     //     })
     // }
-    CloseAlert=()=>{
-        this.setState({alertShow:false,remove:true},()=>{
-            new Promise((resolve,reject) => {
-                console.log(this.state.remove);
-                if (!this.state.remove) {
-                    reject();
-                }
-                else resolve()
-            })
-        })
-    }
-
-    CancelAlert=()=>{
-        this.setState({remove:false,alertShow:false},()=>{
-            new Promise((resolve,reject) => {
-                console.log(this.state.remove);
-                if (!this.state.remove) {
-                    reject();
-                }
-                else resolve()
-            })
-        })
-    }
-    RemoveElement=(key, keyPath, deep, oldValue)=>{
-        this.setState({alertShow:true});
-        console.log(key,keyPath,deep,oldValue);
-    }
     render(){
         return(
             <div>
-                <SAlert CancelAlert={this.CancelAlert} showCancel={true} alertIcon={this.state.alertIcon} CloseAlert={this.CloseAlert} show={this.state.alertShow} title={this.state.alertTitle} text={this.state.alertText}/>
                 <JsonTree 
-                    beforeRemoveAction={this.RemoveElement}
-                    // onClick={this.BeforeRemove}
+                    beforeRemoveAction={this.beforeRemoveAction}
+                    onFullyUpdate={this.onFullyUpdate.bind(this)}
                     minusMenuElement={<span variant="danger"><MdHighlightOff /></span>} 
-                    plusMenuElement={<span onClickCapture={()=>{this.setState({alertShow:true})}} variant="success"><MdAddCircleOutline/></span>}
+                    plusMenuElement={<span variant="success"><MdAddCircleOutline/></span>}
                     editButtonElement={<Button variant="info"><FaEdit/></Button>} style={{fontSize:'20px'}} 
                     cancelButtonElement={<Button style={{marginRight:'2px'}} variant="danger"><MdHighlightOff size={20}/></Button>} 
-                    addButtonElement={<Button variant="success"><FaPlus/></Button>} data={this.state.data} 
+                    addButtonElement={<Button variant="success"><FaPlus/></Button>}
+                    save = {this.props.SaveData} 
+                    data={this.state.data} 
                 />
+                <Row>
+                    <Col ></Col>
+                    <Col style={{textAlign:'center'}}>
+                        <Button onClick={this.SaveData} variant="success">שמירה</Button>
+                    </Col>
+                    <Col style={{textAlign:'center'}}>
+                        <Button onClick={this.RestoreData} variant="info">שחזר ראשוני</Button>
+                    </Col>
+                    {/* <Col style={{textAlign:'center'}}>
+                        <Button onClick={this.BackUp} variant="info">שחזר</Button>
+                    </Col> */}
+                    <Col></Col>
+                </Row>
             </div>
         )
     }
