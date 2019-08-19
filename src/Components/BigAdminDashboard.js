@@ -110,6 +110,7 @@ export default class Dashboard extends React.Component{
         return(
             <div>
                 <AdminNavbar/>
+                <SmallHeaderForm title={'Dashboard'}/>
                 <Row style={{marginTop:'2%',textAlign:'-webkit-center',direction:'rtl'}}>
                     <Col>
                         <KPI title='מספר הפרויקטים באתר' kpi={this.state.projectsCount}/>

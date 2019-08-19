@@ -3,6 +3,7 @@ import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBCollapse,
 MDBHamburgerToggler } from 'mdbreact';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
+import { withRouter } from 'react-router-dom';
 
 class NavbarPage extends Component {
 state = {
@@ -18,6 +19,11 @@ toggleSingleCollapse = collapseId => {
     [collapseId]: !this.state[collapseId]
   });
 }
+Disconnect = ()=>{
+  localStorage.clear();
+  this.props.history.push('/');
+  window.location.reload();
+}
 render() {
   return (
     <Router>
@@ -32,10 +38,13 @@ render() {
                     <Nav.Link href="#/BigAdminDashboard">דשבורד</Nav.Link>
                   </MDBNavItem>
                   <MDBNavItem >
-                    <Nav.Link href="#/InstitudePage">מוסדות</Nav.Link>
+                    <Nav.Link href="#/InstitudePage">עריכת מידע</Nav.Link>
                   </MDBNavItem>
                   <MDBNavItem >
-                    <Nav.Link href="#/CreateGroups">קבוצות</Nav.Link>
+                    <Nav.Link href="#/CreateGroups">פתיחת קבוצות</Nav.Link>
+                  </MDBNavItem>
+                  <MDBNavItem >
+                    <Nav.Link onClick={this.Disconnect}>התנתקות</Nav.Link>
                   </MDBNavItem>
                 </MDBNavbarNav>
               </MDBCollapse>
@@ -45,4 +54,4 @@ render() {
   }
 }
 
-export default NavbarPage;
+export default withRouter(NavbarPage);

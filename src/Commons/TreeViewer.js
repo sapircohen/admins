@@ -22,6 +22,9 @@ const theme = {
     base0F: '#cc6633'
   };
 export default class RPSTreeView extends React.Component {
+    componentDidMount(){
+        console.log(this.props.treeData)
+    }
     render(){
         return (
             // RENDER THE COMPONENT

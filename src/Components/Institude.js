@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import {FaPencilAlt,FaRegEye} from 'react-icons/fa';
 import TreeViewerJson from '../Commons/TreeViewModal';
 import TreeEditorJson from '../Commons/RPStreeEditModal';
+import SmallHeaderForm from '../Commons/SmallHeader';
 
 export default class InstitudePage extends React.Component{
     state={
@@ -22,27 +23,30 @@ export default class InstitudePage extends React.Component{
         institudeName:'',
         readOnly:true,
         treeData:{},
-        viewerTitle:''
+        viewerTitle:'',
+        keyI:''
     }
     componentDidMount(){
         this.GetData();
     }
-    GetDataOnInstitude = (institudeName,data)=>{
+    GetDataView = (institudeName,data)=>{
       this.setState({
             openViewer:true,
             institudeName:institudeName,
             readOnly:false,
             treeData:data,
-            viewerTitle:institudeName
+            viewerTitle:'מידע כללי',
         })
     }
-    EditDataOnInstitude = (institudeName,data)=>{
+    EditData = (institudeName,data,key)=>{
+        
         this.setState({
             openEditor:true,
             institudeName:institudeName,
             readOnly:true,
             treeData:data,
-            viewerTitle:institudeName
+            viewerTitle:'מידע כללי',
+            institudeKey:key
         })
     }
     CloseAlert = ()=>{this.setState({alertShow:false},()=>console.log(this.state.alertShow))}
@@ -50,33 +54,33 @@ export default class InstitudePage extends React.Component{
         this.setState({
             isReady:false
         },()=>{
-            const ref = firebase.database().ref('Data');
-            ref.once("value", (snapshot,key)=> {
+            const ref = firebase.database().ref();
+            ref.on("value", (snapshot,key)=> {
                 let rows=[];
-                snapshot.forEach((institude)=>{
-                    if (institude.key!=='Admins') {
+                snapshot.forEach((data)=>{
+                    if(data.key==='Data'){
                         let r = {
-                            key:(rows.length+1),
-                            Name:institude.val().Name,
+                            key:data.key,
+                            Name:'מידע כולל',
                             Actions:
                             <div >
-                                <Button onClick={()=>this.EditDataOnInstitude(institude.val().Name,institude.val())}  style={{marginLeft:'4px'}} variant="success"><FaPencilAlt/></Button>
-                                {/* <Button style={{marginLeft:'4px'}} variant="danger"><FaRegTrashAlt/></Button> */}
-                                <Button onClick={()=>this.GetDataOnInstitude(institude.val().Name,institude.val())} variant="info"><FaRegEye/></Button>
+                                <Button onClick={()=>this.EditData(data.val().Name,data.val(),data.key)}  style={{marginLeft:'4px'}} variant="success"><FaPencilAlt/></Button>
+                                <Button onClick={()=>this.GetDataView(data.key,data.val())} variant="info"><FaRegEye/></Button>
                             </div>
                         };
                         rows.push(r);
                     }
                 })
+            
                 const institudes = {
                     columns: [
                         {
-                            label: 'מספר',
+                            label: 'מפתח',
                             field: 'key',
                             sort: 'asc',
                           },
                         {
-                          label: 'שם המוסד',
+                          label: 'שם',
                           field: 'Name',
                           sort: 'asc',
                         },
@@ -113,9 +117,10 @@ export default class InstitudePage extends React.Component{
         return(
             <div>
                 <TreeViewerJson title={this.state.viewerTitle} treeData={this.state.treeData} close={this.closePreview} openpreview={this.state.openViewer}/>
-                <TreeEditorJson title={this.state.viewerTitle} treeData={this.state.treeData} close={this.closePreview} openpreview={this.state.openEditor}/>
+                <TreeEditorJson keyI={this.state.keyI} title={this.state.viewerTitle} treeData={this.state.treeData} close={this.closePreview} openpreview={this.state.openEditor}/>
                 <SAlert alertIcon={this.state.alertIcon} CloseAlert={this.CloseAlert} show={this.state.alertShow} title={this.state.alertTitle} text={this.state.alertText}/>
                 <AdminNavbar/>
+                <SmallHeaderForm title={'עריכת מידע כללי'}/>
                 <DatatablePage data={this.state.data}/>
             </div>
         )

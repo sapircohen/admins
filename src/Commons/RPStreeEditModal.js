@@ -9,11 +9,10 @@ export default class TreeEditorJson extends React.Component{
         isIS:false,
         isBS:false,
     }
-    SaveData=()=>{
 
-    }
     componentDidUpdate(){
-      localStorage.setItem('dataToRestore',JSON.stringify(this.props.treeData))
+      localStorage.setItem('dataToRestore',JSON.stringify(this.props.treeData));
+      console.log(this.props.keyI)
     }
     render(){  
         return (
@@ -25,7 +24,7 @@ export default class TreeEditorJson extends React.Component{
               </Modal.Header>
               <Modal.Body>
                 <Container>
-                    <RPSEditTree treeData={this.props.treeData}/>
+                    <RPSEditTree keyI={this.props.keyI} treeData={this.props.treeData}/>
                 </Container>
               </Modal.Body>  
               <Modal.Footer style={{justifyContent:'space-between'}}>

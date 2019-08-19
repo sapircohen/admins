@@ -7,6 +7,8 @@ import {
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import firebase from 'firebase';
+import exportFromJSON from 'export-from-json'
 
 export default class RPSEditTree extends React.Component{
     constructor(props){
@@ -18,6 +20,13 @@ export default class RPSEditTree extends React.Component{
             alertTitle:'Change data?',
             alertText:'are u sure?',
         }
+    }
+    componentDidMount(){
+        const data = this.props.treeData;
+        const fileName = 'RPSdata'+Date.now()
+        const exportType = 'json'
+        
+        exportFromJSON({ data, fileName, exportType })
     }
     onFullyUpdate(newJson) {
         this.setState({
@@ -34,8 +43,16 @@ export default class RPSEditTree extends React.Component{
     beforeRemoveAction = (key, keyPath, deep, oldValue) => window.confirm('are u sure?') ? new Promise(resolve => resolve()):new Promise(reject => false)
 
     SaveData = ()=>{
+        
        if( window.confirm('save data to firebase?')){
-           //save new json tree to firebase
+            const ref = firebase.database().ref();
+            ref.update({
+                Data:this.state.data
+            })
+            .then(()=>{
+                alert('saved successfully')
+            })
+
        }
     }
     // beforeUpdateAction(){
@@ -63,18 +80,19 @@ export default class RPSEditTree extends React.Component{
                     save = {this.props.SaveData} 
                     data={this.state.data} 
                 />
-                <Row>
+                <Row style={{marginTop:'2%'}}>
+                    <Col></Col>
                     <Col ></Col>
-                    <Col style={{textAlign:'center'}}>
-                        <Button onClick={this.SaveData} variant="success">שמירה</Button>
-                    </Col>
-                    <Col style={{textAlign:'center'}}>
-                        <Button onClick={this.RestoreData} variant="info">שחזר ראשוני</Button>
-                    </Col>
                     {/* <Col style={{textAlign:'center'}}>
-                        <Button onClick={this.BackUp} variant="info">שחזר</Button>
+                        <Button size="sm"  onClick={this.SaveData} variant="success">שמירה</Button>
+                    </Col> */}
+                    {/* <Col style={{textAlign:'center'}}>
+                        <Button size="sm" onClick={this.RestoreData} variant="info">שחזר למידע לפני שינויים</Button>
                     </Col> */}
                     <Col></Col>
+                    <Col style={{textAlign:'center'}}>
+                        <Button size="sm"  onClick={this.SaveData} variant="success">שמירה</Button>
+                    </Col>
                 </Row>
             </div>
         )
