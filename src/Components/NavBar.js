@@ -29,9 +29,9 @@ class NavbarProj extends React.Component{
                     <Nav className="mr">
                         <Nav.Link style={{fontSize:17}} href="#/projectsData">לכל הפרויקטים</Nav.Link>
                     </Nav>
-                    <Nav className="mr">
+                    {/* <Nav className="mr">
                         <Nav.Link style={{fontSize:17}} href="#/smallAdminDashboard">דשבורד</Nav.Link>
-                    </Nav>
+                    </Nav> */}
                     <Nav className="mr">
                         <Nav.Link style={{fontSize:17}} onClick={this.Disconnect}>התנתקות</Nav.Link>
                     </Nav>

@@ -17,7 +17,7 @@ const columns =[
       sort: true,
       headerStyle: (column, colIndex) => {
         return {
-          width:'120px',
+          width:'auto',
           backgroundColor:'#BFDCD8',
           fontSize:'14px'
         };
@@ -34,7 +34,7 @@ const columns =[
       sort: true,
       headerStyle: (column, colIndex) => {
           return {
-            width:'180px',
+            width:'auto',
             backgroundColor:'#BFDCD8',
             fontSize:'14px'
         };
@@ -90,7 +90,7 @@ const columns =[
         sort: true,
         headerStyle: (column, colIndex) => {
             return {
-              width:'120px',
+              width:'auto',
               fontSize:'14px',
               backgroundColor:'#BFDCD8',
             };
@@ -107,7 +107,7 @@ const columns =[
         sort: true,
         headerStyle: (column, colIndex) => {
             return {
-                width:'150px',
+                width:'auto',
               backgroundColor:'#BFDCD8',
               fontSize:'14px'
           };
@@ -124,7 +124,7 @@ const columns =[
         sort: true,
         headerStyle: (column, colIndex) => {
             return {
-                width:'150px',
+                width:'auto',
               backgroundColor:'#BFDCD8',
               fontSize:'14px'
           };
@@ -141,8 +141,8 @@ const columns =[
         sort: true,
         headerStyle: (column, colIndex) => {
             return {
-              width:'120px',
-              fontSize:'14px',
+                width:'auto',
+            fontSize:'14px',
               backgroundColor:'#BFDCD8',
             };
         },
@@ -158,7 +158,7 @@ const columns =[
         sort: true,
         headerStyle: (column, colIndex) => {
             return {
-              width:'110px',
+              width:'auto',
               fontSize:'14px',
               backgroundColor:'#BFDCD8',
             };
@@ -197,11 +197,6 @@ const columns =[
               backgroundColor:'#BFDCD8',
             };
         },
-        style: (cell, row, rowIndex, colIndex) => {
-            return {
-                fontSize:'13px'
-            }
-        }
 
     },
 ]

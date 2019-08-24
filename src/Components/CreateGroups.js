@@ -126,7 +126,7 @@ export default class GroupsCreation extends React.Component{
                 this.setState({
                     signature:snapshot.val().Signature,
                     lastGroupIndex:parseInt(snapshot.val().LastGroupIndex)
-                },()=>console.log("signature: "+this.state.Signature))
+                },()=>console.log("signature: "+this.state.signature))
             })
         })
     }
@@ -203,8 +203,8 @@ export default class GroupsCreation extends React.Component{
     }
     CreateDataTableView = ()=>{
         let rows = [];
-        let numberOfGroups = parseInt(this.state.numberOfGroups) + parseInt(this.state.lastGroupIndex);
-        for (let index = this.state.lastGroupIndex; index <= numberOfGroups; index++) {
+        const numberOfGroups = parseInt(this.state.numberOfGroups) + parseInt(this.state.lastGroupIndex);
+        for (let index = this.state.lastGroupIndex; index < numberOfGroups; index++) {
             let r = {
                 GroupName:this.state.signature+index,
                 Password:this.state.password
@@ -238,10 +238,37 @@ export default class GroupsCreation extends React.Component{
     }
     SaveGroups = ()=>{
         //save groups to firebase
-
-    }
-    SetInitalStatesAfterSave = ()=>{
-
+        let ins = this.state.institute;
+        if(this.state.institute==="Ruppin"){
+            ins = "המרכז האקדמי רופין";
+        }
+        const rootRef = firebase.database().ref().child('RuppinProjects');
+        const numberOfGroups = parseInt(this.state.numberOfGroups) + parseInt(this.state.lastGroupIndex);
+        for (let index = this.state.lastGroupIndex; index < numberOfGroups; index++) {
+            let project = {
+                GroupName: this.state.signature+index,
+                Faculty: this.state.faculty,
+                Institute: ins,
+                Department: this.state.department,
+                Major: this.state.major,
+                Password: parseInt(this.state.password),
+            }
+            rootRef.child(project.GroupName).set(project)
+            .then(()=>{
+                this.setState({
+                    alertShow:true,alertTitle:'קבוצות חדשות',alertText:'הקבוצות נפתחו בהצלחה',alertIcon:'success',
+                })
+            })
+            .catch((error)=>{
+                this.setState({
+                    alertShow:true,alertTitle:'קבוצות חדשות',alertText:'קרתה בעיה בעת יצירת קבוצות',alertIcon:'danger',
+                })
+            })
+        }
+        const ref = firebase.database().ref().child('Data').child(this.state.institute).child('Faculties').child(this.state.faculty).child('Departments').child(this.state.department).child('Experties').child(this.state.major);
+        ref.update({
+            LastGroupIndex:numberOfGroups
+        })
     }
     CloseAlert=()=>{this.setState({alertShow:false})}
     render(){
