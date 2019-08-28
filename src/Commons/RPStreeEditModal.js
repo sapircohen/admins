@@ -9,10 +9,8 @@ export default class TreeEditorJson extends React.Component{
         isIS:false,
         isBS:false,
     }
-
-    componentDidUpdate(){
+    componentDidMount(){
       localStorage.setItem('dataToRestore',JSON.stringify(this.props.treeData));
-      console.log(this.props.keyI)
     }
     render(){  
         return (

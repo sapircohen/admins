@@ -29,7 +29,7 @@ render() {
     <Router>
         <MDBNavbar color="amber lighten-4" style={{backgroundColor:'#BFDCD8',elevation:20}} light>
             <MDBNavbarBrand>
-              WeLearn Admin
+              RPS Admin
             </MDBNavbarBrand>
             <MDBHamburgerToggler color="#d3531a" id="hamburger1" onClick={()=> this.toggleSingleCollapse('collapse1')} />
               <MDBCollapse isOpen={this.state.collapse1} navbar>

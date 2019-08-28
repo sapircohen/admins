@@ -61,10 +61,21 @@ export default class InstitudePage extends React.Component{
                     if(data.key==='Data'){
                         let r = {
                             key:data.key,
-                            Name:'מידע כולל',
+                            //Name:'מידע כולל',
                             Actions:
                             <div >
                                 <Button onClick={()=>this.EditData(data.val().Name,data.val(),data.key)}  style={{marginLeft:'4px'}} variant="success"><FaPencilAlt/></Button>
+                                <Button onClick={()=>this.GetDataView(data.key,data.val())} variant="info"><FaRegEye/></Button>
+                            </div>
+                        };
+                        rows.push(r);
+                    }
+                    else{
+                        let r = {
+                            key:data.key,
+                            //Name:'מידע כולל',
+                            Actions:
+                            <div >
                                 <Button onClick={()=>this.GetDataView(data.key,data.val())} variant="info"><FaRegEye/></Button>
                             </div>
                         };
@@ -79,11 +90,6 @@ export default class InstitudePage extends React.Component{
                             field: 'key',
                             sort: 'asc',
                           },
-                        {
-                          label: 'שם',
-                          field: 'Name',
-                          sort: 'asc',
-                        },
                         {
                             label: 'פעולות',
                             field: 'Actions',
