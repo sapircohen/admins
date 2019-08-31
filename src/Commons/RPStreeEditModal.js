@@ -14,7 +14,7 @@ export default class TreeEditorJson extends React.Component{
     }
     render(){  
         return (
-            <Modal style={{backgroundColor:'transparent',fontFamily:'Calibri'}} onHide={this.props.close} show={this.props.openpreview} size="xl" aria-labelledby="contained-modal-title-vcenter">
+            <Modal style={{backgroundColor:'transparent',fontFamily:'Calibri'}} show={this.props.openpreview} size="xl" aria-labelledby="contained-modal-title-vcenter">
               <Modal.Header  style={{margin:'0px auto'}} closeButton>
                 <Modal.Title style={{textAlign:'right'}}>
                     {this.props.title}
