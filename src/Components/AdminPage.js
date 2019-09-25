@@ -9,6 +9,10 @@ import { FaEye } from "react-icons/fa";
 import ToggleProject from '../Commons/toggle';
 import SAlert from '../Commons/SAlert';
 import BDatatable from './BootstrapDatatable';
+import { isArray } from 'util';
+import ModalExample1 from './ModalExample';
+import NavbarPage from './NavbarExample';
+import MenuExampleInvertedSecondary from './NavbarExample';
 
 //consts
 
@@ -63,7 +67,7 @@ export default class AdminPage extends React.Component{
             const ref = firebase.database().ref('RuppinProjects');
             ref.once("value", (snapshot,key)=> {
                 snapshot.forEach((project)=>{
-                    if (project.val().Department===this.state.department && project.val().Faculty ===this.state.faculty && project.val().templateSubmit!==undefined) {
+                    if (project.val().Department===this.state.department && project.val().Faculty ===this.state.faculty && project.val().ProjectName) {
                         console.log(project.val())
                         projectsData.push(project.val());
                     }
@@ -71,21 +75,24 @@ export default class AdminPage extends React.Component{
                 let rows=[];
                 projectsData.forEach((proj)=>{
                     let StudentsNames = '';
-                    proj.Students.forEach((s,key)=>{
+                    if(proj.Students)
+                    {proj.Students.forEach((s,key)=>{
                         if (key===proj.Students.length-1) {
                             StudentsNames+=s.Name;
                         }
                         else StudentsNames+=s.Name+', ';
-                    })
+                    })}
+                    const d = new Date(proj.Year);
+                    const date = d.getFullYear();
                     let r = {
                         GroupName:proj.GroupName,
                         ProjectName:proj.ProjectName,
                         isPublished:proj.isPublished?'כן':'לא',
-                        Year:proj.Year,
+                        Year:date,
                         Major:proj.Major,
                         ProjectCourse:proj.ProjectCourse,
                         ProjectTopic:proj.ProjectTopic,
-                        Advisor:proj.Advisor&&(proj.Advisor.length===2?proj.Advisor[0]+','+proj.Advisor[1]:proj.Advisor[0]),
+                        Advisor:proj.Advisor&&(!isArray(proj.Advisor)?proj.Advisor:(proj.Advisor.length===2?proj.Advisor[0]+','+proj.Advisor[1]:proj.Advisor[0])),
                         Students:StudentsNames,
                         projectDetails:<Button onClick={()=>this.OpenModal(proj)} variant="info"><FaEye/></Button>,
                         isApproved:<ToggleProject GroupName={proj.GroupName} isApproved={proj.isApproved} ChangeApproval={this.ChangeApproval}/> ,
@@ -117,8 +124,10 @@ export default class AdminPage extends React.Component{
         return(
             <div>
                 <SAlert alertIcon={this.state.alertIcon} CloseAlert={this.CloseAlert} show={this.state.alertShow} title={this.state.alertTitle} text={this.state.alertText}/>
-                <GeneralViewer openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
+                {/* <GeneralViewer openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/> */}
+                <ModalExample1 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
                 <NavbarProj/>
+                {/* <MenuExampleInvertedSecondary/> */}
                 <BDatatable data={this.state.data} key={'Year'} />
             </div>
         )

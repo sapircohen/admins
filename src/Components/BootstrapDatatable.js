@@ -200,7 +200,10 @@ const columns =[
 
     },
 ]
-
+const options = {
+    sortName: "Year",  //default sort column name
+    sortOrder: "desc",  //default sort order
+};
 
 class BDatatable extends React.Component{
     
@@ -231,6 +234,7 @@ class BDatatable extends React.Component{
                         </Row>
                         <hr />
                         <BootstrapTable
+                        options={options}
                         pagination={ paginationFactory() }
                         { ...props.baseProps }
                         />

@@ -4,6 +4,7 @@ MDBHamburgerToggler } from 'mdbreact';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Nav from 'react-bootstrap/Nav';
 import { withRouter } from 'react-router-dom';
+import {weLearnLogo} from '../assests/images';
 
 class NavbarPage extends Component {
 state = {
@@ -29,7 +30,12 @@ render() {
     <Router>
         <MDBNavbar color="amber lighten-4" style={{backgroundColor:'#BFDCD8',elevation:20}} light>
             <MDBNavbarBrand>
-              RPS Admin
+              <img
+              src={weLearnLogo}
+              style={{width:'auto',height:'40px'}}
+              className="d-inline-block align-top"
+              alt="We Learn"
+              />
             </MDBNavbarBrand>
             <MDBHamburgerToggler color="#d3531a" id="hamburger1" onClick={()=> this.toggleSingleCollapse('collapse1')} />
               <MDBCollapse isOpen={this.state.collapse1} navbar>

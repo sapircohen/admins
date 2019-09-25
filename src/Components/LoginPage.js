@@ -80,7 +80,7 @@ const styles = theme => ({
     })
     }
     GetUser=()=>{
-      console.log('sdfsf')
+      //console.log('sdfsf')
       const {history} = this.props;
       const ref = firebase.database().ref('Data').child('Admins');
       ref.once("value", (snapshot)=> {
@@ -94,7 +94,7 @@ const styles = theme => ({
       })
       .then(()=>{
         if (!logged) {
-          console.log('sdfsf')
+          //console.log('sdfsf')
           this.getSmallAdmin();
         }
       })
@@ -108,13 +108,13 @@ const styles = theme => ({
             faculty.child('Departments').forEach((dep)=>{
                 const admins =dep.val().Admins;
                 if (admins!==undefined) {
-                    console.log(admins)
+                    //console.log(admins)
                     dep.child('Admins').forEach((admin)=>{
                         if (this.state.password === admin.val().Password && this.state.admin === admin.val().Name) {
                             logged=true;
                             localStorage.setItem('department', JSON.stringify(dep.val().Name));
                             localStorage.setItem('GoogleDriveLink', JSON.stringify(dep.val().Groups));
-                            console.log(dep.val().Groups);
+                            //console.log(dep.val().Groups);
                             localStorage.setItem('faculty',JSON.stringify(faculty.val().Name));
                             localStorage.setItem('adminInfo',JSON.stringify(admin.val()));
                             history.push('/projectsData')
@@ -167,7 +167,7 @@ const styles = theme => ({
               />
             </Avatar>
             <Typography component="h1" variant="h5">
-              התחברות
+              ממשק צוות
             </Typography>
             <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>

@@ -2,21 +2,22 @@ import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import { withRouter } from 'react-router-dom';
-
+import {weLearnLogo} from '../assests/images';
 class NavbarProj extends React.Component{
+    state = { activeItem: this.props.match.url }
     Disconnect = ()=>{
         localStorage.clear();
         this.props.history.push('/');
         window.location.reload();
     }
     render(){
+        const {activeItem} = this.state;
         return(
             <Navbar style={{backgroundColor:'#BFDCD8',elevation:20}}>
-                <Navbar.Brand href="#home">
+                <Navbar.Brand href="#">
                     <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnrOkHS6TvYS5lXbJIeB-MxYIcUOYQ4Jzfu456ztCKSfIpzle2"
-                    width="180"
-                    height="40"
+                    src={weLearnLogo}
+                    style={{width:'auto',height:'40px'}}
                     className="d-inline-block align-top"
                     alt="We Learn"
                     />
@@ -24,16 +25,16 @@ class NavbarProj extends React.Component{
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                     <Nav className="mr">
-                        <Nav.Link style={{fontSize:17}} href={'#/projectsChangeData'}>עריכת נתונים</Nav.Link>
+                        <Nav.Link className={activeItem === '/projectsChangeData'?"active":""} style={{fontSize:17}} href={'#/projectsChangeData'}>עריכת נתונים</Nav.Link>
+                        <Nav.Link className={activeItem === '/projectsData'?"active":""} style={{fontSize:17}} href={"#/projectsData"}>פרויקטים</Nav.Link>
+                        <Nav.Link style={{fontSize:17}} onClick={this.Disconnect}>התנתקות</Nav.Link>
                     </Nav>
                     <Nav className="mr">
-                        <Nav.Link style={{fontSize:17}} href="#/projectsData">לכל הפרויקטים</Nav.Link>
                     </Nav>
                     {/* <Nav className="mr">
                         <Nav.Link style={{fontSize:17}} href="#/smallAdminDashboard">דשבורד</Nav.Link>
                     </Nav> */}
                     <Nav className="mr">
-                        <Nav.Link style={{fontSize:17}} onClick={this.Disconnect}>התנתקות</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Navbar>
