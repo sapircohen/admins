@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import firebase from 'firebase';
 import Loader from 'react-loader-spinner';
+import Header from './MainHeader';
 
 let logged = false;
 
@@ -155,7 +156,9 @@ const styles = theme => ({
         )
       }
       return (
-        <main className={classes.main}>
+        <div>
+          <Header/>
+          <main className={classes.main}>
           <CssBaseline />
           <Paper className={classes.paper}>
             <Avatar style={{backgroundColor:'transparent'}} className={classes.avatar}>
@@ -167,7 +170,7 @@ const styles = theme => ({
               />
             </Avatar>
             <Typography component="h1" variant="h5">
-              ממשק צוות
+              ממשק סגל
             </Typography>
             <form className={classes.form}>
               <FormControl margin="normal" required fullWidth>
@@ -191,6 +194,8 @@ const styles = theme => ({
             </form>
           </Paper>
         </main>
+
+        </div>
       );
     }
   }

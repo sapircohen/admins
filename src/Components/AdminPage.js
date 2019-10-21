@@ -46,6 +46,8 @@ export default class AdminPage extends React.Component{
     }
     closePreview = ()=>this.setState({OpenModal:false})
     ChangeApproval = (projectKey,newState)=>{
+        console.log(projectKey);
+        console.log(newState);
         const ref = firebase.database().ref('RuppinProjects/'+projectKey);
         ref.update({
             isApproved:newState
@@ -68,34 +70,37 @@ export default class AdminPage extends React.Component{
             ref.once("value", (snapshot,key)=> {
                 snapshot.forEach((project)=>{
                     if (project.val().Department===this.state.department && project.val().Faculty ===this.state.faculty && project.val().ProjectName) {
-                        console.log(project.val())
-                        projectsData.push(project.val());
+                        project={
+                            val:project.val(),
+                            key:project.key
+                        }
+                        projectsData.push(project);
                     }
                 })
                 let rows=[];
                 projectsData.forEach((proj)=>{
                     let StudentsNames = '';
-                    if(proj.Students)
-                    {proj.Students.forEach((s,key)=>{
-                        if (key===proj.Students.length-1) {
+                    if(proj.val.Students)
+                    {proj.val.Students.forEach((s,key)=>{
+                        if (key===proj.val.Students.length-1) {
                             StudentsNames+=s.Name;
                         }
                         else StudentsNames+=s.Name+', ';
                     })}
-                    const d = new Date(proj.Year);
+                    const d = new Date(proj.val.Year);
                     const date = d.getFullYear();
                     let r = {
-                        GroupName:proj.GroupName,
-                        ProjectName:proj.ProjectName,
-                        isPublished:proj.isPublished?'כן':'לא',
+                        GroupName:proj.key,
+                        ProjectName:proj.val.ProjectName,
+                        isPublished:proj.val.isPublished?'כן':'לא',
                         Year:date,
-                        Major:proj.Major,
-                        ProjectCourse:proj.ProjectCourse,
-                        ProjectTopic:proj.ProjectTopic,
-                        Advisor:proj.Advisor&&(!isArray(proj.Advisor)?proj.Advisor:(proj.Advisor.length===2?proj.Advisor[0]+','+proj.Advisor[1]:proj.Advisor[0])),
+                        Major:proj.val.Major,
+                        ProjectCourse:proj.val.ProjectCourse,
+                        ProjectTopic:proj.val.ProjectTopic,
+                        Advisor:proj.val.Advisor&&(!isArray(proj.val.Advisor)?proj.val.Advisor:(proj.val.Advisor.length===2?proj.val.Advisor[0]+','+proj.val.Advisor[1]:proj.val.Advisor[0])),
                         Students:StudentsNames,
-                        projectDetails:<Button onClick={()=>this.OpenModal(proj)} variant="info"><FaEye/></Button>,
-                        isApproved:<ToggleProject GroupName={proj.GroupName} isApproved={proj.isApproved} ChangeApproval={this.ChangeApproval}/> ,
+                        projectDetails:<Button onClick={()=>this.OpenModal(proj.val)} variant="info"><FaEye/></Button>,
+                        isApproved:<ToggleProject GroupName={proj.key} isApproved={proj.val.isApproved} ChangeApproval={this.ChangeApproval}/> ,
                         key:rows.length+1
                     };
                     rows.push(r);
