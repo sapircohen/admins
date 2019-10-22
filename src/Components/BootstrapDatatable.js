@@ -101,40 +101,40 @@ const columns =[
             }
         }
       },
-    {
-        text: 'קורס',
-        dataField: 'ProjectCourse',
-        sort: true,
-        headerStyle: (column, colIndex) => {
-            return {
-                width:'auto',
-              backgroundColor:'#BFDCD8',
-              fontSize:'14px'
-          };
-        },
-        style: (cell, row, rowIndex, colIndex) => {
-            return {
-                fontSize:'13px'
-            }
-        }
-    },
-    {
-        text: 'נושא',
-        dataField: 'ProjectTopic',
-        sort: true,
-        headerStyle: (column, colIndex) => {
-            return {
-                width:'auto',
-              backgroundColor:'#BFDCD8',
-              fontSize:'14px'
-          };
-        },
-        style: (cell, row, rowIndex, colIndex) => {
-            return {
-                fontSize:'13px'
-            }
-        }
-    },
+    // {
+    //     text: 'קורס',
+    //     dataField: 'ProjectCourse',
+    //     sort: true,
+    //     headerStyle: (column, colIndex) => {
+    //         return {
+    //             width:'auto',
+    //           backgroundColor:'#BFDCD8',
+    //           fontSize:'14px'
+    //       };
+    //     },
+    //     style: (cell, row, rowIndex, colIndex) => {
+    //         return {
+    //             fontSize:'13px'
+    //         }
+    //     }
+    // },
+    // {
+    //     text: 'נושא',
+    //     dataField: 'ProjectTopic',
+    //     sort: true,
+    //     headerStyle: (column, colIndex) => {
+    //         return {
+    //             width:'auto',
+    //           backgroundColor:'#BFDCD8',
+    //           fontSize:'14px'
+    //       };
+    //     },
+    //     style: (cell, row, rowIndex, colIndex) => {
+    //         return {
+    //             fontSize:'13px'
+    //         }
+    //     }
+    // },
     {
         text: 'מנחה/מנחת הפרויקט',
         dataField: 'Advisor',
@@ -189,6 +189,19 @@ const columns =[
     {
         text:'מאושר?',
         dataField:'isApproved',
+        sort: true,
+        
+        headerStyle: (column, colIndex) => {
+            return {
+              fontSize:'14px',
+              backgroundColor:'#BFDCD8',
+            };
+        },
+
+    },
+    {
+        text:'מצב עריכה',
+        dataField:'isEditable',
         sort: true,
         
         headerStyle: (column, colIndex) => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
 // import DatatablePage from './DataTable';
-import GeneralViewer from './GeneralViewer';
 import NavbarProj from './NavBar';
 import Loader from 'react-loader-spinner';
 import Button from 'react-bootstrap/Button';
@@ -11,8 +10,6 @@ import SAlert from '../Commons/SAlert';
 import BDatatable from './BootstrapDatatable';
 import { isArray } from 'util';
 import ModalExample1 from './ModalExample';
-import NavbarPage from './NavbarExample';
-import MenuExampleInvertedSecondary from './NavbarExample';
 
 //consts
 
@@ -46,8 +43,6 @@ export default class AdminPage extends React.Component{
     }
     closePreview = ()=>this.setState({OpenModal:false})
     ChangeApproval = (projectKey,newState)=>{
-        console.log(projectKey);
-        console.log(newState);
         const ref = firebase.database().ref('RuppinProjects/'+projectKey);
         ref.update({
             isApproved:newState
@@ -57,6 +52,21 @@ export default class AdminPage extends React.Component{
                 this.setState({alertShow:true,alertTitle:projectKey,alertText:'הפרויקט מאושר לפרסום',alertIcon:'success'});
             } else {
                 this.setState({alertShow:true,alertTitle:projectKey,alertText:'הפרויקט אינו מאושר לפרסום',alertIcon:'warning'});
+            }
+        })
+
+    }
+    ChangeEditable= (projectKey,newState)=>{
+        const ref = firebase.database().ref('RuppinProjects/'+projectKey);
+        console.log(newState)
+        ref.update({
+            Password:newState===true?123456:'notEditableDontEvenTry'
+        })
+        .then(()=>{
+            if (newState) {
+                this.setState({alertShow:true,alertTitle:projectKey,alertText:'ניתן לערוך את התוצר, סיסמת הפרויקט - 123456',alertIcon:'success'});
+            } else {
+                this.setState({alertShow:true,alertTitle:projectKey,alertText:'לא ניתן לערוך את התוצר',alertIcon:'warning'});
             }
         })
 
@@ -93,14 +103,15 @@ export default class AdminPage extends React.Component{
                         GroupName:proj.key,
                         ProjectName:proj.val.ProjectName,
                         isPublished:proj.val.isPublished?'כן':'לא',
-                        Year:date,
+                        Year:date===1970?proj.val.Year:date,
                         Major:proj.val.Major,
-                        ProjectCourse:proj.val.ProjectCourse,
-                        ProjectTopic:proj.val.ProjectTopic,
+                        //ProjectCourse:proj.val.ProjectCourse,
+                        //ProjectTopic:proj.val.ProjectTopic,
                         Advisor:proj.val.Advisor&&(!isArray(proj.val.Advisor)?proj.val.Advisor:(proj.val.Advisor.length===2?proj.val.Advisor[0]+','+proj.val.Advisor[1]:proj.val.Advisor[0])),
                         Students:StudentsNames,
                         projectDetails:<Button onClick={()=>this.OpenModal(proj.val)} variant="info"><FaEye/></Button>,
                         isApproved:<ToggleProject GroupName={proj.key} isApproved={proj.val.isApproved} ChangeApproval={this.ChangeApproval}/> ,
+                        isEditable:<ToggleProject GroupName={proj.key} isApproved={proj.val.Password?true:false} ChangeApproval={this.ChangeEditable}/> ,
                         key:rows.length+1
                     };
                     rows.push(r);
