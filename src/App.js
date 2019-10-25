@@ -13,11 +13,11 @@ import 'firebase/storage';
 
 import Dashboard from './Components/BigAdminDashboard';
 import SmallDashboard from './Components/SmallAdminDashboard';
-//import { FirebaseTestConfig } from './Keys/APIkeys';
-import { FirebaseProdConfig } from './Keys/APIkeys';
+import { FirebaseTestConfig } from './Keys/APIkeys';
+//import { FirebaseProdConfig } from './Keys/APIkeys';
 
-firebase.initializeApp(FirebaseProdConfig);
-//firebase.initializeApp(FirebaseTestConfig);
+//firebase.initializeApp(FirebaseProdConfig);
+firebase.initializeApp(FirebaseTestConfig);
 export const storage =  firebase.storage();
 
 function App(props) {

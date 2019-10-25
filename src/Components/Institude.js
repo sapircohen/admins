@@ -38,8 +38,7 @@ export default class InstitudePage extends React.Component{
             viewerTitle:'מידע כללי',
         })
     }
-    EditData = (institudeName,data,key)=>{
-        
+    EditData = (institudeName,data,key)=>{ 
         this.setState({
             openEditor:true,
             institudeName:institudeName,
@@ -49,7 +48,7 @@ export default class InstitudePage extends React.Component{
             institudeKey:key
         })
     }
-    CloseAlert = ()=>{this.setState({alertShow:false},()=>console.log(this.state.alertShow))}
+    CloseAlert = ()=>{this.setState({alertShow:false})}
     GetData = ()=>{
         this.setState({
             isReady:false
@@ -105,6 +104,77 @@ export default class InstitudePage extends React.Component{
             })
         })
     }
+    HashtagsUpdate = ()=>{
+        if( window.confirm('update hashtags for all faculties?')){
+            this.CreateHashtags();
+        }
+        else{
+            //hashtags update not confirmed
+        }
+    }
+    CreateHashtags=()=>{
+        const facultiesNames=[];
+        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties');
+        ref.on("value", (snapshot)=> {
+            snapshot.forEach((faculty)=>{
+                facultiesNames.push(faculty.val().Name);
+                this.GetHashtags(faculty.val().Name)
+            })
+        })
+    }
+    GetHashtags=(fac)=>{
+        const hashtagsForFaculties = [];
+        let ref2 = firebase.database().ref('RuppinProjects');
+        ref2.on('value',(snapshot)=>{
+            snapshot.forEach((project)=>{
+                if(project.val().Faculty===fac){
+                    if (project.val().HashTags) {
+                        project.val().HashTags.forEach((hash)=>{
+                            hashtagsForFaculties.push(hash);
+                        })
+                    }
+                }
+            })
+        })
+        this.CalculateHashtags(fac,hashtagsForFaculties);
+    }
+    CalculateHashtags=(fac,hashtags)=>{
+        let HashTags=[];
+        for (let i = 0; i < hashtags.length; i++) {
+            let counter=0;
+            for (let j = 0; j < hashtags.length; j++) {
+                if(hashtags[i]===hashtags[j]){
+                    counter++;
+                }
+            }
+            let hash={
+                Name:hashtags[i],
+                Value:counter
+            }
+            HashTags.push(hash);
+        }
+        const Hashs = Array.from(new Set(HashTags.map(x=>x.Name)))
+        .map(Name=>{
+            return {Name:Name,Value:HashTags.find(s=>s.Name===Name).Value}
+        })
+        this.SaveHashtagsToFirebase(fac,Hashs);
+    }
+    SaveHashtagsToFirebase=(faculty,newHashtags)=>{
+        newHashtags.sort(function(a, b) {
+            return parseFloat(b.Value) - parseFloat(a.Value);
+        });
+        console.log(newHashtags)
+        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty);
+        ref.update({HashTags:newHashtags})
+        .then(()=>{
+            this.setState({
+                alertTitle:'האשטגים',
+                alertText:'האשטגים עודכנו בהצלחה',
+                alertShow:true,
+                alertIcon:'success',
+            })
+        })
+    }
     closePreview = ()=>this.setState({openViewer:false,openEditor:false})
 
     render(){
@@ -127,6 +197,7 @@ export default class InstitudePage extends React.Component{
                 <SAlert alertIcon={this.state.alertIcon} CloseAlert={this.CloseAlert} show={this.state.alertShow} title={this.state.alertTitle} text={this.state.alertText}/>
                 <AdminNavbar/>
                 <SmallHeaderForm title={'עריכת מידע כללי'}/>
+                <Button onClick={this.HashtagsUpdate} variant='outline-info' style={{marginLeft:'3%'}}>עידכון האשטגים לכל הפקולטות</Button>
                 <DatatablePage data={this.state.data}/>
             </div>
         )
