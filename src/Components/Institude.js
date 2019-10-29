@@ -9,6 +9,7 @@ import {FaPencilAlt,FaRegEye} from 'react-icons/fa';
 import TreeViewerJson from '../Commons/TreeViewModal';
 import TreeEditorJson from '../Commons/RPStreeEditModal';
 import SmallHeaderForm from '../Commons/SmallHeader';
+import { isObject } from 'util';
 
 export default class InstitudePage extends React.Component{
     state={
@@ -114,6 +115,7 @@ export default class InstitudePage extends React.Component{
     }
     CreateHashtags=()=>{
         const facultiesNames=[];
+
         const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties');
         ref.on("value", (snapshot)=> {
             snapshot.forEach((faculty)=>{
@@ -123,14 +125,21 @@ export default class InstitudePage extends React.Component{
         })
     }
     GetHashtags=(fac)=>{
+        let fac2="anotherFacultyForValidation";
+        if(fac==="כלכלה ומנהל עסקים"){
+            fac2="מנהל עסקים וכלכלה"
+        }
         const hashtagsForFaculties = [];
         let ref2 = firebase.database().ref('RuppinProjects');
         ref2.on('value',(snapshot)=>{
             snapshot.forEach((project)=>{
-                if(project.val().Faculty===fac){
+                if(project.val().Faculty===fac || project.val().Faculty===fac2){
                     if (project.val().HashTags) {
                         project.val().HashTags.forEach((hash)=>{
-                            hashtagsForFaculties.push(hash);
+                            if(isObject(hash)){
+                                hashtagsForFaculties.push(hash.value);
+                            }
+                            else hashtagsForFaculties.push(hash);
                         })
                     }
                 }
