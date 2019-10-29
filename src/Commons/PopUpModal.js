@@ -24,6 +24,12 @@ export default class FormDialog extends React.Component{
             case 2:
                 this.props.AddTech(this.state.text);
                 break;
+            case 3:
+                this.props.AddHashtag(this.state.text);
+                break;
+            case 4:
+                this.props.EditHashtag(this.state.text);
+                break;
             default:
                 break;
         }

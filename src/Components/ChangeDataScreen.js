@@ -5,10 +5,11 @@ import Loader from 'react-loader-spinner';
 import SmallHeaderForm from '../Commons/SmallHeader';
 import DatatablePage from './DataTable';
 import Button from 'react-bootstrap/Button';
-import { FaTrashAlt,FaPlusSquare,FaGoogleDrive } from "react-icons/fa";
+import {FaEdit, FaTrashAlt,FaPlusSquare,FaGoogleDrive } from "react-icons/fa";
 import FormDialog from '../Commons/PopUpModal';
 import {Row,Col} from 'react-bootstrap';
 import DownloadExcel from '../Commons/ExcelExport';
+import { isObject } from 'util';
 //consts
 const department = JSON.parse(localStorage.getItem('department'));
 const faculty = JSON.parse(localStorage.getItem('faculty'));
@@ -16,6 +17,7 @@ const adminInfo = JSON.parse(localStorage.getItem('adminInfo'));
 const GoogleDriveLink = JSON.parse(localStorage.getItem('GoogleDriveLink'));
 var advisorsList = [];
 var techsList = [];
+var hashsList=[];
 var projectsData = [];
 export default class ChangeData extends React.Component{
     state={
@@ -26,20 +28,68 @@ export default class ChangeData extends React.Component{
         data:[],
         techsData:{},
         modalIndex:0,
-        dataSet:[]
+        dataSet:[],
+        hashData:[],
+        hashKey:'',
+        hashName:''
     }
     componentDidMount(){
-        
         this.getGroupsTable();
         this.getAdvisorsTable();
+        this.getHashtagsTable();
         if (adminInfo.techs) {
             this.getTechsTable();
         }
     }
     DeleteAdvisor=(key)=>{
-        console.log(key)
         const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('Departments').child(department).child('Advisors').child(key);
         ref.remove();
+    }
+    DeleteHashtag=(key)=>{
+        if(window.confirm('פעולה זו תמחק את ההאשטג לכל התוצרים שתייגו את הפרויקט שלהם עם ההאשטג הזה. לאחר מכן לא יהיה ניתן לשחזר עבור הפרויקטים את ההאשטג שנמחק, האם להמשיך?')){
+            let hashName='';
+            let fac2 = '';
+            if(faculty==='מנהל עסקים וכלכלה'){
+                fac2 = 'כלכלה ומנהל עסקים';
+            }
+            const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('HashTags').child(key);
+            ref.once('value',(snapshot)=>{
+                hashName=snapshot.val().Name;
+            }).then(()=>{
+                ref.remove()
+                .then(()=>{
+                    const ref2 = firebase.database().ref('RuppinProjects');
+                    ref2.on('value',(snapshot)=>{
+                        snapshot.forEach((project)=>{
+                            if(project.val().HashTags){
+                                if(faculty===project.val().Faculty || fac2===project.val().Faculty){
+                                    let ref3 = firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
+                                    ref3.on('value',(snapshot)=>{
+                                        snapshot.forEach((hash)=>{
+                                            if(isObject(hash.val())){
+                                                if(hash.val().value===hashName){
+                                                    console.log('same');
+                                                    const ref4 =firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
+                                                    ref4.child(hash.key).remove();
+                                                 }
+                                            }
+                                            else{
+                                                if(hash.val()===hashName){
+                                                    const ref4 =firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
+                                                    ref4.child(hash.key).remove();
+                                                }
+                                            }
+                                        })
+                                    })
+                                }
+                            }
+                        })
+                    })
+                })
+                .then(()=>this.setState({openModal:false}))            
+            })
+        }
+
     }
     DeleteTech=(key)=>{
         console.log(key)
@@ -79,6 +129,52 @@ export default class ChangeData extends React.Component{
             this.setState({
                 data:advisors,
             },()=>console.log(this.state.data))
+        })
+    }
+    getHashtagsTable =()=>{
+        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('HashTags');
+        ref.on("value", (snapshot,key)=> {
+            let rows=[];
+            hashsList=[];
+            snapshot.forEach((hash)=>{
+                hashsList.push(hash.val());
+                let r = {
+                    Hashtag:hash.val().Name,
+                    Value:hash.val().Value,
+                    Actions:
+                        (<div>
+                            <Button style={{marginLeft:'2%'}} onClick={()=>this.setState({openModal:true,modalTitle:'עריכת האשטג',modalIndex:4,hashKey:hash.key,hashName:hash.val().Name})} variant="warning"><FaEdit/></Button>
+                            <Button onClick={()=>this.DeleteHashtag(hash.key)} variant="danger"><FaTrashAlt/></Button>
+                        </div>),
+                };
+                rows.push(r);
+            })
+            const hashs = {
+                columns: [
+                    {
+                      label: 'האשטג',
+                      field: 'ProjectName',
+                      sort: 'asc',
+                      width: 270
+                    },
+                    {
+                        label: 'מספר מופעים',
+                        field: 'Delete',
+                        sort: 'asc',
+                        width: 270
+                    },
+                    {
+                        label: 'פעולות',
+                        field: 'Actions',
+                        sort: 'asc',
+                        width: 270
+                    },
+                  ],
+                rows:rows  
+            }
+            this.setState({
+                hashData:hashs,
+            })
         })
     }
     getGroupsTable=()=>{
@@ -174,6 +270,75 @@ export default class ChangeData extends React.Component{
         })
         .then(()=>this.setState({openModal:false}))
     }
+    AddHashtag=(hashName)=>{
+        let isHashExists = false;
+        hashsList.forEach((hash)=>{
+            if(hash.Name===hashName){
+                isHashExists=true;
+            }
+        })
+        if(!isHashExists){
+            const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty);
+            const newHash = {
+                Name:hashName,
+                Value:1
+            }
+            hashsList.push(newHash);
+            console.log(hashsList);
+            ref.update({
+                HashTags:hashsList
+            })
+            .then(()=>this.setState({openModal:false}))
+        }
+        else{
+            this.setState({openModal:false},()=>{
+                alert('האשטג כבר קיים');
+            })
+            
+        }
+    }
+    EditHashtag = (newHashTagName)=>{
+        if(window.confirm('פעולה זו תשנה לכל התוצרים שעבורם קיים האשטג בשם הזה לשם החדש, האם להמשיך?')){
+            let fac2 = '';
+            if(faculty==='מנהל עסקים וכלכלה'){
+                fac2 = 'כלכלה ומנהל עסקים';
+            }
+            const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('HashTags').child(this.state.hashKey);
+            ref.update({
+                Name:newHashTagName
+            })
+            .then(()=>{
+                const ref2 = firebase.database().ref('RuppinProjects');
+                ref2.on('value',(snapshot)=>{
+                    snapshot.forEach((project)=>{
+                        if(project.val().HashTags){
+                            if(faculty===project.val().Faculty || fac2===project.val().Faculty){
+                                let ref3 = firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
+                                ref3.on('value',(snapshot)=>{
+                                    snapshot.forEach((hash)=>{
+                                        if(isObject(hash.val())){
+                                            if(hash.val().value===this.state.hashName){
+                                                console.log('same');
+                                                const ref4 =firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
+                                                ref4.child(hash.key).update({value:newHashTagName,label:newHashTagName})
+                                             }
+                                        }
+                                        else{
+                                            if(hash.val()===this.state.hashName){
+                                                const ref4 =firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
+                                                ref4.child(hash.key).update({value:newHashTagName,label:newHashTagName})
+                                            }
+                                        }
+                                    })
+                                })
+                            }
+                        }
+                    })
+                })
+            })
+            .then(()=>this.setState({openModal:false}))        
+        }
+    }
     handleClose=()=>{this.setState({openModal:false})}
     render(){
         if(!this.state.isReady){
@@ -191,7 +356,7 @@ export default class ChangeData extends React.Component{
         return(
             <div>
                 <NavbarProj/>
-                <FormDialog  modalIndex={this.state.modalIndex} title={this.state.modalTitle} AddTech={this.AddTech} AddAdvisor={this.AddAdvisor} handleClose={this.handleClose} open={this.state.openModal}/>
+                <FormDialog modalIndex={this.state.modalIndex} title={this.state.modalTitle} AddHashtag={this.AddHashtag} EditHashtag={this.EditHashtag} AddTech={this.AddTech} AddAdvisor={this.AddAdvisor} handleClose={this.handleClose} open={this.state.openModal}/>
                 <div style={{direction:'rtl',border:'solid 1px',padding:15,borderRadius:20,backgroundColor:'#fff',margin:'5%',boxShadow:'5px 10px #888888'}}>
                     <SmallHeaderForm title={'עריכת מנחי הפרויקטים'}/>
                     <Row>
@@ -215,6 +380,17 @@ export default class ChangeData extends React.Component{
                         </Col>
                     </Row>
                     <DatatablePage paging={true} data={this.state.dataForGroups}/> 
+                </div>
+                <div style={{direction:'rtl',border:'solid 1px',padding:15,borderRadius:20,backgroundColor:'#fff',margin:'5%',boxShadow:'5px 10px #888888'}}>
+                    <SmallHeaderForm title={'עריכת  האשטגים'}/>
+                    <Row>
+                        <Col style={{textAlign:'center'}} xs='4'>
+                            <Button onClick={()=>this.setState({openModal:true,modalTitle:'שם האשטג',modalIndex:3})} variant="success"><FaPlusSquare/>  הוספת האשטג</Button>
+                        </Col>
+                        <Col xs='4'></Col>
+                        <Col xs='4'></Col>
+                    </Row>
+                    <DatatablePage paging={true} data={this.state.hashData}/>
                 </div>
                 {adminInfo.techs&&
                 <div style={{direction:'rtl',border:'solid 1px',padding:15,borderRadius:20,backgroundColor:'#fff',margin:'5%',boxShadow:'5px 10px #888888'}}>
