@@ -136,10 +136,10 @@ const styles = theme => ({
       })
     }
     changedAdmin(e){
-      this.setState({admin:e.target.value});
+      this.setState({admin:e.target.value.trim()});
     }
     changedPassword(e){
-      this.setState({password:e.target.value})
+      this.setState({password:e.target.value.trim()})
     }
     render(){
       const { classes } = this.props;

@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import { MDBNavbar, MDBNavbarBrand, MDBNavbarNav, MDBNavItem, MDBCollapse,
 MDBHamburgerToggler } from 'mdbreact';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Nav from 'react-bootstrap/Nav';
+import {Nav,Badge} from 'react-bootstrap';
 import { withRouter } from 'react-router-dom';
 import {weLearnLogo} from '../assests/images';
+import firebase from 'firebase';
 
 class NavbarPage extends Component {
 state = {
   collapse1: false,
-  collapseID: ''
+  collapseID: '',
+  notifications:''
+}
+componentDidMount(){
+  this.getNotifications();
 }
 toggleCollapse = collapseID => () => {
   this.setState(prevState => ({ collapseID: (prevState.collapseID !== collapseID ? collapseID : '') }));
@@ -24,6 +29,18 @@ Disconnect = ()=>{
   localStorage.clear();
   this.props.history.push('/');
   window.location.reload();
+}
+getNotifications=()=>{
+  const ref = firebase.database().ref('Data').child('Ruppin').child('Messages');
+  ref.on("value", (snapshot,key)=> {
+    let counter=0;
+      snapshot.forEach((msg)=>{
+          if(!msg.val().isSent){
+              counter++;
+          }
+      })
+      this.setState({notifications:counter})
+  })
 }
 render() {
   return (
@@ -48,6 +65,11 @@ render() {
                   </MDBNavItem>
                   <MDBNavItem >
                     <Nav.Link href="#/CreateGroups">פתיחת קבוצות</Nav.Link>
+                  </MDBNavItem>
+                  <MDBNavItem >
+                    <Nav.Link href="#/Messeges">הודעות ממעסיקים
+                      <Badge variant="light">{this.state.notifications}</Badge>
+                    </Nav.Link>
                   </MDBNavItem>
                   <MDBNavItem >
                     <Nav.Link onClick={this.Disconnect}>התנתקות</Nav.Link>

@@ -8,8 +8,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 import Swiper from 'react-id-swiper';
 import Iframe from 'react-iframe';
+import { isObject } from 'util';
 
-import 'react-id-swiper/lib/styles/css/swiper.css';
+import 'swiper/css/swiper.css'
 //CSS:
 import '../css/previewStyle.css';
 //ICONS:
@@ -451,7 +452,7 @@ export default class ModalExample1 extends React.Component{
                                     key={key}
                                     style={{marginRight:'10px'}}
                                     avatar={<Avatar style={{color:'black',backgroundColor:'lightskyblue'}} alt="computer icon"><GoTag size={20}/></Avatar>}
-                                    label={tag}
+                                    label={isObject(tag)?tag.value:tag}
                                   />                                    )
                                 }
                             </Col>

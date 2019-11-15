@@ -13,11 +13,13 @@ import 'firebase/storage';
 
 import Dashboard from './Components/BigAdminDashboard';
 import SmallDashboard from './Components/SmallAdminDashboard';
-import { FirebaseTestConfig } from './Keys/APIkeys';
-//import { FirebaseProdConfig } from './Keys/APIkeys';
+import Messeges from './Components/Messeges';
 
-//firebase.initializeApp(FirebaseProdConfig);
-firebase.initializeApp(FirebaseTestConfig);
+import { FirebaseProdConfig } from './Keys/APIkeys';
+//import { FirebaseTestConfig } from './Keys/APIkeys';
+
+firebase.initializeApp(FirebaseProdConfig);
+//firebase.initializeApp(FirebaseTestConfig);
 export const storage =  firebase.storage();
 
 function App(props) {
@@ -31,6 +33,7 @@ function App(props) {
       <Route path='/BigAdminDashboard' component={Dashboard}/>
       <Route path='/CreateGroups' component={GroupsCreation}/>
       <Route path='/smallAdminDashboard' component={SmallDashboard}/>
+      <Route path='/Messeges' component={Messeges}/>
     </Switch>
   );
 }

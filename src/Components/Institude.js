@@ -25,7 +25,8 @@ export default class InstitudePage extends React.Component{
         readOnly:true,
         treeData:{},
         viewerTitle:'',
-        keyI:''
+        keyI:'',
+        notifications:''
     }
     componentDidMount(){
         this.GetData();
@@ -185,7 +186,7 @@ export default class InstitudePage extends React.Component{
         })
     }
     closePreview = ()=>this.setState({openViewer:false,openEditor:false})
-
+    
     render(){
         if(!this.state.isReady){
             return(
