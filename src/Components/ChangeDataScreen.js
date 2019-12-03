@@ -102,6 +102,7 @@ export default class ChangeData extends React.Component{
             advisorsList=[];
             let rows=[];
             snapshot.forEach((advisor)=>{
+                console.log(advisor.val())
                 advisorsList.push(advisor.val());
                 let r = {
                     Advisor:advisor.val(),
@@ -113,7 +114,7 @@ export default class ChangeData extends React.Component{
                 columns: [
                     {
                       label: 'שם המנחה',
-                      field: 'ProjectName',
+                      field: 'Advisor',
                       sort: 'asc',
                       width: 270
                     },
@@ -153,13 +154,13 @@ export default class ChangeData extends React.Component{
                 columns: [
                     {
                       label: 'האשטג',
-                      field: 'ProjectName',
+                      field: 'Hashtag',
                       sort: 'asc',
                       width: 270
                     },
                     {
                         label: 'מספר מופעים',
-                        field: 'Delete',
+                        field: 'Value',
                         sort: 'asc',
                         width: 270
                     },
@@ -281,10 +282,9 @@ export default class ChangeData extends React.Component{
             const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty);
             const newHash = {
                 Name:hashName,
-                Value:1
+                Value:0
             }
             hashsList.push(newHash);
-            console.log(hashsList);
             ref.update({
                 HashTags:hashsList
             })

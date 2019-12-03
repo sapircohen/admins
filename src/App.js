@@ -6,6 +6,7 @@ import AdminPage from './Components/AdminPage';
 import ChangeData from './Components/ChangeDataScreen';
 import InstitudePage from './Components/Institude';
 import GroupsCreation from './Components/CreateGroups';
+import TemplateValidation from './Components/TemplateValidation';
 
 //test and prod enviorments
 import firebase from 'firebase';
@@ -15,11 +16,11 @@ import Dashboard from './Components/BigAdminDashboard';
 import SmallDashboard from './Components/SmallAdminDashboard';
 import Messeges from './Components/Messeges';
 
-import { FirebaseProdConfig } from './Keys/APIkeys';
-//import { FirebaseTestConfig } from './Keys/APIkeys';
+//import { FirebaseProdConfig } from './Keys/APIkeys';
+import { FirebaseTestConfig } from './Keys/APIkeys';
 
-firebase.initializeApp(FirebaseProdConfig);
-//firebase.initializeApp(FirebaseTestConfig);
+//firebase.initializeApp(FirebaseProdConfig);
+firebase.initializeApp(FirebaseTestConfig);
 export const storage =  firebase.storage();
 
 function App(props) {
@@ -34,6 +35,7 @@ function App(props) {
       <Route path='/CreateGroups' component={GroupsCreation}/>
       <Route path='/smallAdminDashboard' component={SmallDashboard}/>
       <Route path='/Messeges' component={Messeges}/>
+      <Route path='/TemplateValidation' component={TemplateValidation}/>
     </Switch>
   );
 }
