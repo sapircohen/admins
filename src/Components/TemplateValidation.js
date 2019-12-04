@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import AdminNavBar from './AdminNavBar';
 import Select from '../Commons/FormSelect';
 import firebase from 'firebase';
+import DatatablePage from './DataTable';
 
 const titles = {
     InstituteTitle:'מוסד',
@@ -21,6 +22,8 @@ const TemplateValidation =(props)=>{
     const [department,setDepartment] = useState('');
     const [major,setMajor] = useState('');
     const [course,setCourse] = useState('');
+    const [template,setTemplate] = useState([]);
+    const [data,setData] = useState([]);
 
     useEffect(() => {
         getInstitutes();
@@ -124,10 +127,13 @@ const TemplateValidation =(props)=>{
             const ref = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(courseName);
             ref.once("value",(snapshot)=>{
                 setCourse(snapshot.val());
-                console.log(snapshot.val())
+                setTemplate(snapshot.val().TemplateConfig)
             })
         }
     }
+    useEffect(()=>{
+        GetData()
+    },[template])
     //when selected inputs changes
     const selectedInputChange = (name,input)=>{
         switch (name) {
@@ -150,6 +156,43 @@ const TemplateValidation =(props)=>{
                 break;
         }
     }
+    const GetData = ()=>{
+        let rows=[];
+        console.log(template)
+        template.forEach((validator)=>{
+            let r = {
+                Name:validator.Name,
+                DisplayName:validator.DisplayName,
+                isMandatory:validator.isMandatory?'כן':'לא'
+            };
+            rows.push(r);
+            
+        })
+        const table = {
+            columns: [
+                {
+                  label: 'שם השדה',
+                  field: 'Name',
+                  sort: 'asc',
+                  width: 270
+                },
+                {
+                    label: 'שם תצוגה',
+                    field: 'DisplayName',
+                    sort: 'asc',
+                    width: 270
+                },
+                {
+                    label: 'האם שדה חובה?',
+                    field: 'isMandatory',
+                    sort: 'asc',
+                    width: 270
+                },
+              ],
+            rows:rows  
+        }
+        setData(table);
+    }
 
     return(
         <div>
@@ -164,8 +207,7 @@ const TemplateValidation =(props)=>{
             </div>
             {course!==''&&
             <div style={{border:'solid 1px',padding:15,borderRadius:20,margin:60,backgroundColor:'#fff',boxShadow:'5px 10px #888888'}}>
-
-    
+                    <DatatablePage paging={true} data={data}/>
             </div>
             }
         </div>
