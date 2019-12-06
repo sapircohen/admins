@@ -28,7 +28,7 @@ const TemplateValidation =(props)=>{
     const [template,setTemplate] = useState([]);
     const [data,setData] = useState([]);
     const [show,setShow] = useState(false);
-
+    const [validator, setValidator] = useState({});
     useEffect(() => {
         getInstitutes();
     }, []);
@@ -130,15 +130,11 @@ const TemplateValidation =(props)=>{
         if(courseName!=='בחר'){
             const ref = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(courseName);
             ref.once("value",(snapshot)=>{
-                setCourse(snapshot.val());
-                setTemplate(snapshot.val().TemplateConfig)
+                setCourse(snapshot.key);
+                snapshot.val().TemplateConfig?setTemplate(snapshot.val().TemplateConfig):alert("Template config not found.");
             })
         }
     }
-    useEffect(()=>{
-        GetData()
-    },[template])
-    //when selected inputs changes
     const selectedInputChange = (name,input)=>{
         switch (name) {
             case titles.InstituteTitle:
@@ -166,6 +162,7 @@ const TemplateValidation =(props)=>{
             let r = {
                 Name:validator.Name,
                 DisplayName:validator.DisplayName,
+                FieldType:validator.fieldType,
                 isMandatory:validator.isMandatory?'כן':'לא',
                 EditValidator:<Button onClick={()=>changeValidator(validator)} variant="warning">עריכה</Button>
             };
@@ -187,6 +184,12 @@ const TemplateValidation =(props)=>{
                     width: 270
                 },
                 {
+                    label: 'סוג שדה',
+                    field: 'FieldType',
+                    sort: 'asc',
+                    width: 270
+                },
+                {
                     label: 'האם שדה חובה?',
                     field: 'isMandatory',
                     sort: 'asc',
@@ -204,13 +207,37 @@ const TemplateValidation =(props)=>{
         setData(table);
     }
     const changeValidator=(validatorData)=>{
-        setShow(true)
+        setValidator(validatorData);
+        window.setTimeout(()=>{
+            setShow(true)
+        },1000)
     }
     const handleClose=()=>{setShow(false)}
-
+    useEffect(()=>{GetData()},[template])
+    const saveData=(validator,maximum,minimum,isMandatory)=>{
+        let newValidator = validator;
+        newValidator.minimum  = minimum===''?validator.minimum:minimum;
+        newValidator.maximum = maximum===''?validator.maximum:maximum;
+        newValidator.isMandatory = isMandatory===''?validator.isMandatory:isMandatory;
+        console.log(newValidator);
+        let validators= [];
+        const ref = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(course).child('TemplateConfig');
+        ref.once("value",(snapshot)=>{
+            snapshot.forEach((val)=>{
+                if(val.val().Name===newValidator.Name){
+                    validators.push(newValidator);
+                }
+                else validators.push(val.val());
+            })
+        }).then(()=>{
+            const ref1 = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(course);
+            ref1.update({"TemplateConfig":validators});
+        })
+        
+    }
     return(
         <div>
-            <TemplateModal handleClose={handleClose} open={show} title='עריכת ולידציה' />
+            <TemplateModal saveData={saveData} validator={validator} handleClose={handleClose} open={show} title='עריכת ולידציה' />
             <AdminNavBar/>
             <div style={{border:'solid 1px',padding:15,margin:60,backgroundColor:'#fff',boxShadow:'5px 10px #888888'}}>
                 <SmallHeaderForm title='Validation config' />
@@ -219,7 +246,6 @@ const TemplateValidation =(props)=>{
                 <Select changedInput={selectedInputChange} list={departmentList}  title={titles.DepartmentTitle}/>
                 <Select changedInput={selectedInputChange} list={majorList} title={titles.MajorTitle}/>
                 <Select changedInput={selectedInputChange} list={coursesList} title={titles.CourseTitle}/>
-               
             </div>
             {course!==''&&
             <div style={{border:'solid 1px',padding:15,margin:60,backgroundColor:'#fff',boxShadow:'5px 10px #888888'}}>

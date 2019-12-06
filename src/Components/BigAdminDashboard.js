@@ -61,14 +61,15 @@ export default class Dashboard extends React.Component{
             })
         })
         .then(()=>{
-            console.log('second ref')
             const secondRef = firebase.database().ref('RuppinProjects');
             let dataForFac = [];
+            let fac2= "מנהל עסקים וכלכלה";
             secondRef.once("value", (snapshot,key)=> {
                 faculties.forEach((fac)=>{
                     let counter = 0;
+                    console.log(fac)
                     snapshot.forEach((project)=>{
-                        if (project.val().ProjectName && project.val().Faculty===fac) {
+                        if (project.val().ProjectName && (project.val().Faculty===fac || project.val().Faculty===fac2)) {
                             counter++;
                         }
                     })
