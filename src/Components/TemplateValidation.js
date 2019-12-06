@@ -3,6 +3,9 @@ import AdminNavBar from './AdminNavBar';
 import Select from '../Commons/FormSelect';
 import firebase from 'firebase';
 import DatatablePage from './DataTable';
+import Button from 'react-bootstrap/Button';
+import SmallHeaderForm from '../Commons/SmallHeader';
+import TemplateModal from '../Commons/templateModal';
 
 const titles = {
     InstituteTitle:'מוסד',
@@ -24,6 +27,7 @@ const TemplateValidation =(props)=>{
     const [course,setCourse] = useState('');
     const [template,setTemplate] = useState([]);
     const [data,setData] = useState([]);
+    const [show,setShow] = useState(false);
 
     useEffect(() => {
         getInstitutes();
@@ -158,12 +162,12 @@ const TemplateValidation =(props)=>{
     }
     const GetData = ()=>{
         let rows=[];
-        console.log(template)
-        template.forEach((validator)=>{
+        template.forEach((validator,key)=>{
             let r = {
                 Name:validator.Name,
                 DisplayName:validator.DisplayName,
-                isMandatory:validator.isMandatory?'כן':'לא'
+                isMandatory:validator.isMandatory?'כן':'לא',
+                EditValidator:<Button onClick={()=>changeValidator(validator)} variant="warning">עריכה</Button>
             };
             rows.push(r);
             
@@ -188,16 +192,28 @@ const TemplateValidation =(props)=>{
                     sort: 'asc',
                     width: 270
                 },
+                {
+                    label: 'פעולות',
+                    field: 'EditValidator',
+                    sort: 'asc',
+                    width: 270
+                },
               ],
             rows:rows  
         }
         setData(table);
     }
+    const changeValidator=(validatorData)=>{
+        setShow(true)
+    }
+    const handleClose=()=>{setShow(false)}
 
     return(
         <div>
+            <TemplateModal handleClose={handleClose} open={show} title='עריכת ולידציה' />
             <AdminNavBar/>
-            <div style={{border:'solid 1px',padding:15,borderRadius:20,margin:60,backgroundColor:'#fff',boxShadow:'5px 10px #888888'}}>
+            <div style={{border:'solid 1px',padding:15,margin:60,backgroundColor:'#fff',boxShadow:'5px 10px #888888'}}>
+                <SmallHeaderForm title='Validation config' />
                 <Select changedInput={selectedInputChange} list={instituteList} title={titles.InstituteTitle}/>
                 <Select changedInput={selectedInputChange} list={facultyList} title={titles.FacultyTitle}/>
                 <Select changedInput={selectedInputChange} list={departmentList}  title={titles.DepartmentTitle}/>
@@ -206,7 +222,7 @@ const TemplateValidation =(props)=>{
                
             </div>
             {course!==''&&
-            <div style={{border:'solid 1px',padding:15,borderRadius:20,margin:60,backgroundColor:'#fff',boxShadow:'5px 10px #888888'}}>
+            <div style={{border:'solid 1px',padding:15,margin:60,backgroundColor:'#fff',boxShadow:'5px 10px #888888'}}>
                     <DatatablePage paging={true} data={data}/>
             </div>
             }
