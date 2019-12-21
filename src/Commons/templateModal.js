@@ -8,8 +8,15 @@ export default class TemplateModal extends React.Component{
         maximum:'',
         minimum:''
     }
+    componentDidMount(){
+        console.log(this.props.validator)
+        if(this.props.validator===undefined){
+            this.props.handleClose();
+        }
+    }
     SaveData=()=>{
-        this.props.saveData(this.props.validator,this.state.maximum,this.state.minimum,this.state.isMandatory)
+        this.props.saveData(this.props.validator,this.state.maximum,this.state.minimum,this.state.isMandatory);
+        this.props.handleClose();
     }
     changeMandatoryField=(evt)=>{
         this.setState({isMandatory:evt.target.checked},()=>console.log(this.state.isMandatory))

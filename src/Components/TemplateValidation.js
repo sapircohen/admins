@@ -208,11 +208,12 @@ const TemplateValidation =(props)=>{
     }
     const changeValidator=(validatorData)=>{
         setValidator(validatorData);
-        window.setTimeout(()=>{
-            setShow(true)
-        },1000)
+        setShow(true);
     }
-    const handleClose=()=>{setShow(false)}
+    const handleClose=()=>{
+        setValidator({});
+        setShow(false)
+    }
     useEffect(()=>{GetData()},[template])
     const saveData=(validator,maximum,minimum,isMandatory)=>{
         let newValidator = validator;
