@@ -9,7 +9,7 @@ import ToggleProject from '../Commons/toggle';
 import SAlert from '../Commons/SAlert';
 import BDatatable from './BootstrapDatatable';
 import { isArray } from 'util';
-import ModalExample1 from './ModalExample';
+import ModalExample1,{Vt6} from './ModalExample';
 
 //consts
 
@@ -140,8 +140,11 @@ export default class AdminPage extends React.Component{
         return(
             <div>
                 <SAlert alertIcon={this.state.alertIcon} CloseAlert={this.CloseAlert} show={this.state.alertShow} title={this.state.alertTitle} text={this.state.alertText}/>
-                {/* <GeneralViewer openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/> */}
-                <ModalExample1 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
+                {
+                    this.state.projectDetails.templateView==='vt6'?
+                    <Vt6 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>:
+                    <ModalExample1 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
+                }
                 <NavbarProj/>
                 {/* <MenuExampleInvertedSecondary/> */}
                 <BDatatable data={this.state.data} key={'Year'} />
