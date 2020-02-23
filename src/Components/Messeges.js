@@ -1,24 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import firebase from 'firebase';
-import Button from 'react-bootstrap/Button';
 import DatatablePage from './DataTable';
 import AdminNavBar from './AdminNavBar';
 import ToggleProject from '../Commons/toggle';
 import SmallHeaderForm from '../Commons/SmallHeader';
-
-export default class Messeges extends React.Component{
-    state={
-        data:[],
-        data2:[]
-    }
-    componentDidMount(){
-        this.GetData();
-    }
-    ChangeSend=(key,value)=>{
-        const ref = firebase.database().ref('Data').child('Ruppin').child('Messages').child(key);
-        ref.update({isSent:value});
-    }
-    GetData = ()=>{
+import {FaCheck}  from "react-icons/fa";
+const Messege = () => {
+    const [messeges,setMesseges] = useState([]);
+    const [oldMesseges,setOldMesseges] = useState([]);
+    useEffect(()=>{
+        getData();
+    },[])
+    const getData = ()=>{
         const ref = firebase.database().ref('Data').child('Ruppin').child('Messages');
         ref.on("value", (snapshot,key)=> {
             let rows=[];
@@ -42,7 +35,7 @@ export default class Messeges extends React.Component{
                        })}
                         
                     </div>,
-                    isSend:<ToggleProject GroupName={data.key} isApproved={data.val().isSent} ChangeApproval={this.ChangeSend}/> ,
+                    isSend:!data.val().isSent?<ToggleProject GroupName={data.key} isApproved={data.val().isSent} ChangeApproval={changeSend}/>:<FaCheck size={30} color="green"/>,
                 };
                 if(data.val().isSent){
                     rows2.push(r);
@@ -159,21 +152,24 @@ export default class Messeges extends React.Component{
                 ],
                 rows:rows2
             }
-            this.setState({
-                data:messeges,
-                data2:oldMesseges
-            })
+            setMesseges(messeges);
+            setOldMesseges(oldMesseges)
         })
+        const changeSend=(key,value)=>{
+            const ref = firebase.database().ref('Data').child('Ruppin').child('Messages').child(key);
+            ref.update({isSent:value});
+        }
     }
-    render(){
-        return(
-            <div>
-                <AdminNavBar/>
-                <SmallHeaderForm title="הודעות חדשות"/>
-                <DatatablePage data={this.state.data}/>
-                <SmallHeaderForm title="הודעות שטופלו"/>
-                <DatatablePage data={this.state.data2}/>
-            </div>
-        );
-    }
+    return ( 
+        <div>
+            <AdminNavBar/>
+            <SmallHeaderForm title="הודעות חדשות"/>
+            <DatatablePage data={messeges}/>
+            <SmallHeaderForm title="הודעות שטופלו"/>
+            <DatatablePage data={oldMesseges}/>
+        </div>
+     );
 }
+ 
+export default Messege;
+

@@ -23,39 +23,32 @@ const theme = {
     base0E: '#ae81ff',
     base0F: '#cc6633'
   };
-export default class RPSTreeView extends React.Component {
-    BackUp(){
-        const data = this.props.treeData;
+  const RPSTreeView = (props) => {
+    function BackUp(){
+        const data = props.treeData;
         const fileName = 'RPSdata'+Date.now()
         const exportType = 'json'
         
         exportFromJSON({ data, fileName, exportType })
     }
-    render(){
-        return (
-            // RENDER THE COMPONENT
-            <div>
-                <JSONTree data={this.props.treeData} theme={theme} invertTheme={false} />
-                <Row style={{marginTop:'2%'}}>
-                    <Col></Col>
-                    <Col ></Col>
-                    {/* <Col style={{textAlign:'center'}}>
-                        <Button size="sm"  onClick={this.SaveData} variant="success">שמירה</Button>
-                    </Col> */}
-                    {/* <Col style={{textAlign:'center'}}>
-                        <Button size="sm" onClick={this.RestoreData} variant="info">שחזר למידע לפני שינויים</Button>
-                    </Col> */}
-                    <Col></Col>
-                    <Col style={{textAlign:'center'}}>
-                        <Button size="sm"  onClick={this.BackUp.bind(this)} variant="success">Download json</Button>
-                    </Col>
-                </Row>
-            </div>
-        );
-    }
-}
+      return ( 
+          <div>       
+            <JSONTree data={props.treeData} theme={theme} invertTheme={false} />
+            <Row style={{marginTop:'2%'}}>
+                <Col></Col>
+                <Col ></Col>
+                <Col></Col>
+                <Col style={{textAlign:'center'}}>
+                    <Button size="sm"  onClick={BackUp} variant="success">Download json</Button>
+                </Col>
+            </Row>
+        </div>
 
- 
-// Inside a React component:
+       );
+  }
+   
+export default RPSTreeView;
+
+
 
  

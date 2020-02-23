@@ -43,6 +43,8 @@ export default class AdminPage extends React.Component{
     }
     closePreview = ()=>this.setState({OpenModal:false})
     ChangeApproval = (projectKey,newState)=>{
+        console.log("project key: ",projectKey);
+        console.log("approved:  ",newState);
         const ref = firebase.database().ref('RuppinProjects/'+projectKey);
         ref.update({
             isApproved:newState
@@ -57,8 +59,9 @@ export default class AdminPage extends React.Component{
 
     }
     ChangeEditable= (projectKey,newState)=>{
+        console.log("project key: ",projectKey);
+        console.log("approved:  ",newState);
         const ref = firebase.database().ref('RuppinProjects/'+projectKey);
-        console.log(newState)
         ref.update({
             Password:newState===true?123456:'notEditableDontEvenTry'
         })
@@ -71,7 +74,7 @@ export default class AdminPage extends React.Component{
         })
 
     }
-    CloseAlert = ()=>{this.setState({alertShow:false},()=>console.log(this.state.alertShow))}
+    CloseAlert = ()=>{this.setState({alertShow:false})}
     GetData = ()=>{
         this.setState({
             isReady:false,
@@ -105,13 +108,11 @@ export default class AdminPage extends React.Component{
                         isPublished:proj.val.isPublished?'כן':'לא',
                         Year:date===1970?proj.val.Year:date,
                         Major:proj.val.Major,
-                        //ProjectCourse:proj.val.ProjectCourse,
-                        //ProjectTopic:proj.val.ProjectTopic,
                         Advisor:proj.val.Advisor&&(!isArray(proj.val.Advisor)?proj.val.Advisor:(proj.val.Advisor.length===2?proj.val.Advisor[0]+','+proj.val.Advisor[1]:proj.val.Advisor[0])),
                         Students:StudentsNames,
                         projectDetails:<Button onClick={()=>this.OpenModal(proj.val)} variant="info"><FaEye/></Button>,
                         isApproved:<ToggleProject GroupName={proj.key} isApproved={proj.val.isApproved} ChangeApproval={this.ChangeApproval}/> ,
-                        isEditable:<ToggleProject GroupName={proj.key} isApproved={proj.val.Password?true:false} ChangeApproval={this.ChangeEditable}/> ,
+                        isEditable:<ToggleProject GroupName={proj.key} isApproved={proj.val.Password!=='notEditableDontEvenTry'?true:false} ChangeApproval={this.ChangeEditable}/> ,
                         key:rows.length+1
                     };
                     rows.push(r);

@@ -43,8 +43,7 @@ export default class RPSEditTree extends React.Component{
     beforeRemoveAction = (key, keyPath, deep, oldValue) => window.confirm('are u sure?') ? new Promise(resolve => resolve()):new Promise(reject => false)
 
     SaveData = ()=>{
-        
-       if( window.confirm('save data to firebase?')){
+       if(window.confirm('save data to firebase?')){
             const ref = firebase.database().ref();
             ref.update({
                 Data:this.state.data
@@ -52,20 +51,8 @@ export default class RPSEditTree extends React.Component{
             .then(()=>{
                 alert('saved successfully')
             })
-
        }
     }
-    // beforeUpdateAction(){
-    //     localStorage.setItem('dataOneStepBefore',JSON.stringify(this.state.data))
-    //     new Promise(resolve => resolve())
-    // }
-    // BackUp=()=>{
-    //     this.setState({
-    //         data:JSON.parse(localStorage.getItem('dataOneStepBefore'))
-    //     },()=>{
-    //         console.log(this.state.data);
-    //     })
-    // }
     render(){
         return(
             <div>
@@ -82,13 +69,7 @@ export default class RPSEditTree extends React.Component{
                 />
                 <Row style={{marginTop:'2%'}}>
                     <Col></Col>
-                    <Col ></Col>
-                    {/* <Col style={{textAlign:'center'}}>
-                        <Button size="sm"  onClick={this.SaveData} variant="success">שמירה</Button>
-                    </Col> */}
-                    {/* <Col style={{textAlign:'center'}}>
-                        <Button size="sm" onClick={this.RestoreData} variant="info">שחזר למידע לפני שינויים</Button>
-                    </Col> */}
+                    <Col></Col>
                     <Col></Col>
                     <Col style={{textAlign:'center'}}>
                         <Button size="sm"  onClick={this.SaveData} variant="success">שמירה</Button>

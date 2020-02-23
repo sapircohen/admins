@@ -1,33 +1,20 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import Toggle from 'react-toggle';
 import "react-toggle/style.css";
 
-class ToggleProject extends React.Component{
-    state={
-        change:true
+const ToggleProject = (props) => {
+    const [change,setChange] = useState(props.isApproved);
+    const changeApproval=()=>{
+        props.ChangeApproval(props.GroupName,!change)
+        setChange(!change);
     }
-    componentDidMount(){
-        this.setState({
-            change:this.props.isApproved
-        })
-    }
-    changeApproval=()=>{
-        const temp = !this.state.change;
-        this.setState({
-            change:temp
-        },()=>{
-            this.props.ChangeApproval(this.props.GroupName,this.state.change)
-        })
-    }
-    render(){
-        return(
-            <div style={{fontSize:'10px'}}>
-                <Toggle
-                onClick={this.changeApproval}
-                checked={this.state.change}            
-                />
-            </div>
-        )
-    }
+    return ( 
+        <div style={{fontSize:'10px'}}>
+            <Toggle
+            onClick={changeApproval}
+            checked={change}            
+            />
+        </div>
+     );
 }
 export default ToggleProject;

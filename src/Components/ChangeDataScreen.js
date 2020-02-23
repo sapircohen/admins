@@ -102,6 +102,7 @@ export default class ChangeData extends React.Component{
             advisorsList=[];
             let rows=[];
             snapshot.forEach((advisor)=>{
+                console.log(advisor.val());
                 advisorsList.push(advisor.val());
                 let r = {
                     Advisor:advisor.val(),
@@ -113,7 +114,7 @@ export default class ChangeData extends React.Component{
                 columns: [
                     {
                       label: 'שם המנחה',
-                      field: 'ProjectName',
+                      field: 'Advisor',
                       sort: 'asc',
                       width: 270
                     },
@@ -153,13 +154,13 @@ export default class ChangeData extends React.Component{
                 columns: [
                     {
                       label: 'האשטג',
-                      field: 'ProjectName',
+                      field: 'Hashtag',
                       sort: 'asc',
                       width: 270
                     },
                     {
                         label: 'מספר מופעים',
-                        field: 'Delete',
+                        field: 'Value',
                         sort: 'asc',
                         width: 270
                     },
@@ -212,7 +213,7 @@ export default class ChangeData extends React.Component{
                 dataForGroups:groups,
                 dataSet:rows,
                 isReady:true
-            },()=>console.log(this.state.dataForGroups))
+            })
 
         })
     }
@@ -264,7 +265,6 @@ export default class ChangeData extends React.Component{
     AddTech = (techName)=>{
         const ref = firebase.database().ref();
         techsList.push(techName);
-        console.log(techsList);
         ref.update({
             Technologies:techsList
         })
@@ -284,7 +284,6 @@ export default class ChangeData extends React.Component{
                 Value:1
             }
             hashsList.push(newHash);
-            console.log(hashsList);
             ref.update({
                 HashTags:hashsList
             })
