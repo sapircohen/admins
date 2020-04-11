@@ -6,7 +6,8 @@ export default class TemplateModal extends React.Component{
     state={
         isMandatory:'',
         maximum:'',
-        minimum:''
+        minimum:'',
+        alertText:''
     }
     componentDidMount(){
         console.log(this.props.validator)
@@ -15,7 +16,7 @@ export default class TemplateModal extends React.Component{
         }
     }
     SaveData=()=>{
-        this.props.saveData(this.props.validator,this.state.maximum,this.state.minimum,this.state.isMandatory);
+        this.props.saveData(this.props.validator,this.state.maximum,this.state.minimum,this.state.isMandatory,this.state.alertText);
         this.props.handleClose();
     }
     changeMandatoryField=(evt)=>{
@@ -23,10 +24,11 @@ export default class TemplateModal extends React.Component{
     }
     changeMaximum=(evt)=>{this.setState({maximum:parseInt(evt.target.value)})}
     changeMinimum=(evt)=>{this.setState({minimum:parseInt(evt.target.value)})}
+    changeAlert = (evt)=>{this.setState({alertText:parseInt(evt.target.value)})}
     render(){
     return (
         <div>
-        <Dialog keepMounted open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
+        <Dialog fullWidth="md" keepMounted open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
             <DialogTitle style={{textAlign:'right'}} id="form-dialog-title">{this.props.title}</DialogTitle>
             <DialogContent>
                 <Form.Group>
@@ -44,6 +46,13 @@ export default class TemplateModal extends React.Component{
                     <Form.Label column sm="4">Minimum</Form.Label>
                     <Col sm="8">
                         <Form.Control defaultValue={this.props.validator.minimum} onChange={this.changeMinimum} type="number"/>
+                    </Col>
+                </Form.Group>}
+                {this.props.validator.alertText&&
+                <Form.Group as={Row}>
+                    <Form.Label column sm="4">alertText</Form.Label>
+                    <Col sm="8">
+                        <Form.Control defaultValue={this.props.validator.alertText} onChange={this.changeAlert} type="text"/>
                     </Col>
                 </Form.Group>}
             </DialogContent>

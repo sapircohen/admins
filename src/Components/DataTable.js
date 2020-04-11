@@ -3,9 +3,6 @@ import { MDBDataTable } from 'mdbreact';
 
 import '../App.css';
 class DatatablePage extends React.Component{
-    // componentDidMount(){
-    //     window.location.reload();
-    // }
     render(){
     return (
         <div style={{padding:'2%',direction:'rtl'}}>
