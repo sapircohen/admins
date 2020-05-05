@@ -1,7 +1,7 @@
 import React from 'react';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { withRouter } from 'react-router-dom';
+import { withRouter,Link } from 'react-router-dom';
 import {weLearnLogo} from '../assests/images';
 class NavbarProj extends React.Component{
     state = { activeItem: this.props.match.url }
@@ -25,8 +25,9 @@ class NavbarProj extends React.Component{
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
                     <Nav className="mr">
-                        <Nav.Link className={activeItem === '/projectsChangeData'?"active":""} style={{fontSize:17}} href={'#/projectsChangeData'}>עריכת נתונים</Nav.Link>
-                        <Nav.Link className={activeItem === '/projectsData'?"active":""} style={{fontSize:17}} href={"#/projectsData"}>פרויקטים</Nav.Link>
+                        <Link/>
+                        <Nav.Link onClick={()=>this.props.history.push("/ChangeData")} className={activeItem === '/ChangeData'?"active":""} style={{fontSize:17}}>עריכת נתונים</Nav.Link>
+                        <Nav.Link onClick={()=>this.props.history.push("/projectsData")} className={activeItem === '/projectsData'?"active":""} style={{fontSize:17}}>פרויקטים</Nav.Link>
                         <Nav.Link style={{fontSize:17}} onClick={this.Disconnect}>התנתקות</Nav.Link>
                     </Nav>
                     <Nav className="mr">

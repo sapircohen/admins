@@ -227,7 +227,6 @@ const TemplateValidation =(props)=>{
         newValidator.maximum = maximum===''?validator.maximum:maximum;
         newValidator.isMandatory = isMandatory===''?validator.isMandatory:isMandatory;
         newValidator.alertText = alertText===''?validator.alertText:alertText;
-        console.log(newValidator);
         let validators= [];
         const ref = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(course).child('TemplateConfig');
         ref.once("value",(snapshot)=>{

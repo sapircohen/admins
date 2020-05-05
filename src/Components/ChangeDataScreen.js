@@ -10,23 +10,26 @@ import FormDialog from '../Commons/PopUpModal';
 import {Row,Col} from 'react-bootstrap';
 import DownloadExcel from '../Commons/ExcelExport';
 import { isObject } from 'util';
-//consts
-const department = JSON.parse(localStorage.getItem('department'));
-const faculty = JSON.parse(localStorage.getItem('faculty'));
-const adminInfo = JSON.parse(localStorage.getItem('adminInfo'));
-const GoogleDriveLink = JSON.parse(localStorage.getItem('GoogleDriveLink'));
+
 var advisorsList = [];
 var techsList = [];
 var hashsList=[];
 var projectsData = [];
 export default class ChangeData extends React.Component{
+    constructor(props){
+        super(props);
+        this.adminInfo = JSON.parse(localStorage.getItem('adminInfo'));
+        this.department = JSON.parse(localStorage.getItem('department'));
+        this.faculty = JSON.parse(localStorage.getItem('faculty'));
+        this.GoogleDriveLink = JSON.parse(localStorage.getItem('GoogleDriveLink'));
+    }
     state={
         isReady:true,
         advisors:[],
         dataForGroups:[],
         openModal:false,
         data:[],
-        techsData:{},
+        techsData:null,
         modalIndex:0,
         dataSet:[],
         hashData:[],
@@ -37,22 +40,22 @@ export default class ChangeData extends React.Component{
         this.getGroupsTable();
         this.getAdvisorsTable();
         this.getHashtagsTable();
-        if (adminInfo.techs) {
+        if (this.adminInfo.techs) {
             this.getTechsTable();
         }
     }
     DeleteAdvisor=(key)=>{
-        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('Departments').child(department).child('Advisors').child(key);
+        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(this.faculty).child('Departments').child(this.department).child('Advisors').child(key);
         ref.remove();
     }
     DeleteHashtag=(key)=>{
         if(window.confirm('פעולה זו תמחק את ההאשטג לכל התוצרים שתייגו את הפרויקט שלהם עם ההאשטג הזה. לאחר מכן לא יהיה ניתן לשחזר עבור הפרויקטים את ההאשטג שנמחק, האם להמשיך?')){
             let hashName='';
             let fac2 = '';
-            if(faculty==='מנהל עסקים וכלכלה'){
+            if(this.faculty==='מנהל עסקים וכלכלה'){
                 fac2 = 'כלכלה ומנהל עסקים';
             }
-            const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('HashTags').child(key);
+            const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(this.faculty).child('HashTags').child(key);
             ref.once('value',(snapshot)=>{
                 hashName=snapshot.val().Name;
             }).then(()=>{
@@ -62,13 +65,12 @@ export default class ChangeData extends React.Component{
                     ref2.on('value',(snapshot)=>{
                         snapshot.forEach((project)=>{
                             if(project.val().HashTags){
-                                if(faculty===project.val().Faculty || fac2===project.val().Faculty){
+                                if(this.faculty===project.val().Faculty || fac2===project.val().Faculty){
                                     let ref3 = firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
                                     ref3.on('value',(snapshot)=>{
                                         snapshot.forEach((hash)=>{
                                             if(isObject(hash.val())){
                                                 if(hash.val().value===hashName){
-                                                    console.log('same');
                                                     const ref4 =firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
                                                     ref4.child(hash.key).remove();
                                                  }
@@ -92,17 +94,15 @@ export default class ChangeData extends React.Component{
 
     }
     DeleteTech=(key)=>{
-        console.log(key)
-        const ref = firebase.database().ref(adminInfo.techs).child(key);
+        const ref = firebase.database().ref(this.adminInfo.techs).child(key);
         ref.remove();
     }
     getAdvisorsTable=()=>{
-        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('Departments').child(department).child('Advisors');
+        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(this.faculty).child('Departments').child(this.department).child('Advisors');
         ref.on("value", (snapshot,key)=> {
             advisorsList=[];
             let rows=[];
             snapshot.forEach((advisor)=>{
-                console.log(advisor.val())
                 advisorsList.push(advisor.val());
                 let r = {
                     Advisor:advisor.val(),
@@ -129,11 +129,11 @@ export default class ChangeData extends React.Component{
             }
             this.setState({
                 data:advisors,
-            },()=>console.log(this.state.data))
+            })
         })
     }
     getHashtagsTable =()=>{
-        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('HashTags');
+        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(this.faculty).child('HashTags');
         ref.on("value", (snapshot,key)=> {
             let rows=[];
             hashsList=[];
@@ -183,7 +183,7 @@ export default class ChangeData extends React.Component{
         ref.on("value", (snapshot)=> {
             let rows=[];
             snapshot.forEach((project)=>{
-                if (project.val().Department===department && project.val().Faculty===faculty && project.val().GroupName) {
+                if (project.val().Department===this.department && project.val().Faculty===this.faculty && project.val().GroupName) {
                     projectsData.push(project.val());
                     let r = {
                         GroupName:project.val().GroupName,
@@ -213,13 +213,13 @@ export default class ChangeData extends React.Component{
                 dataForGroups:groups,
                 dataSet:rows,
                 isReady:true
-            },()=>console.log(this.state.dataForGroups))
+            })
 
         })
     }
     getTechsTable=()=>{
-        if (adminInfo.techs!=='') {
-            const ref = firebase.database().ref(adminInfo.techs);
+        if (this.adminInfo.techs) {
+            const ref = firebase.database().ref(this.adminInfo.techs);
             ref.on("value", (snapshot,key)=> {
                 techsList=[];
                 let techsRows=[];
@@ -255,7 +255,7 @@ export default class ChangeData extends React.Component{
         }
     }
     AddAdvisor = (advisorName)=>{
-        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('Departments').child(department);
+        const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(this.faculty).child('Departments').child(this.department);
         advisorsList.push(advisorName);
         ref.update({
             Advisors:advisorsList
@@ -265,7 +265,6 @@ export default class ChangeData extends React.Component{
     AddTech = (techName)=>{
         const ref = firebase.database().ref();
         techsList.push(techName);
-        console.log(techsList);
         ref.update({
             Technologies:techsList
         })
@@ -279,7 +278,7 @@ export default class ChangeData extends React.Component{
             }
         })
         if(!isHashExists){
-            const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty);
+            const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(this.faculty);
             const newHash = {
                 Name:hashName,
                 Value:0
@@ -300,10 +299,10 @@ export default class ChangeData extends React.Component{
     EditHashtag = (newHashTagName)=>{
         if(window.confirm('פעולה זו תשנה לכל התוצרים שעבורם קיים האשטג בשם הזה לשם החדש, האם להמשיך?')){
             let fac2 = '';
-            if(faculty==='מנהל עסקים וכלכלה'){
+            if(this.faculty==='מנהל עסקים וכלכלה'){
                 fac2 = 'כלכלה ומנהל עסקים';
             }
-            const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(faculty).child('HashTags').child(this.state.hashKey);
+            const ref = firebase.database().ref('Data').child('Ruppin').child('Faculties').child(this.faculty).child('HashTags').child(this.state.hashKey);
             ref.update({
                 Name:newHashTagName
             })
@@ -312,13 +311,12 @@ export default class ChangeData extends React.Component{
                 ref2.on('value',(snapshot)=>{
                     snapshot.forEach((project)=>{
                         if(project.val().HashTags){
-                            if(faculty===project.val().Faculty || fac2===project.val().Faculty){
+                            if(this.faculty===project.val().Faculty || fac2===project.val().Faculty){
                                 let ref3 = firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
                                 ref3.on('value',(snapshot)=>{
                                     snapshot.forEach((hash)=>{
                                         if(isObject(hash.val())){
                                             if(hash.val().value===this.state.hashName){
-                                                console.log('same');
                                                 const ref4 =firebase.database().ref('RuppinProjects').child(project.key).child('HashTags');
                                                 ref4.child(hash.key).update({value:newHashTagName,label:newHashTagName})
                                              }
@@ -376,7 +374,7 @@ export default class ChangeData extends React.Component{
                         </Col>
                         <Col xs='4'></Col>
                         <Col style={{textAlign:'center'}} xs='4'>
-                            <Button onClick={()=>window.open(GoogleDriveLink)} variant="success"><FaGoogleDrive/> כל הקבוצות</Button>
+                            <Button onClick={()=>window.open(this.GoogleDriveLink)} variant="success"><FaGoogleDrive/> כל הקבוצות</Button>
                         </Col>
                     </Row>
                     <DatatablePage paging={true} data={this.state.dataForGroups}/> 
@@ -392,7 +390,7 @@ export default class ChangeData extends React.Component{
                     </Row>
                     <DatatablePage paging={true} data={this.state.hashData}/>
                 </div>
-                {adminInfo.techs&&
+                {this.state.techsData!==null&&
                 <div style={{direction:'rtl',border:'solid 1px',padding:15,borderRadius:20,backgroundColor:'#fff',margin:'5%',boxShadow:'5px 10px #888888'}}>
                     <SmallHeaderForm title={'עריכת טכנולוגיות'}/>
                     <Row>

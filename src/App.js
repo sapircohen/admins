@@ -16,11 +16,11 @@ import Dashboard from './Components/BigAdminDashboard';
 import SmallDashboard from './Components/SmallAdminDashboard';
 import Messeges from './Components/Messeges';
 
-//import { FirebaseProdConfig } from './Keys/APIkeys';
-import { FirebaseTestConfig } from './Keys/APIkeys';
+import { FirebaseProdConfig } from './Keys/APIkeys';
+//import { FirebaseTestConfig } from './Keys/APIkeys';
 
-//firebase.initializeApp(FirebaseProdConfig);
-firebase.initializeApp(FirebaseTestConfig);
+firebase.initializeApp(FirebaseProdConfig);
+//firebase.initializeApp(FirebaseTestConfig);
 export const storage =  firebase.storage();
 
 function App(props) {
@@ -29,7 +29,7 @@ function App(props) {
     <Switch location={props.location}>
       <Route path='/' exact component={LoginPage}/>
       <Route path='/projectsData' component={AdminPage}/>
-      <Route path='/projectsChangeData' component={ChangeData}/>
+      <Route path='/ChangeData' component={ChangeData}/>
       <Route path='/InstitudePage' component={InstitudePage}/>
       <Route path='/BigAdminDashboard' component={Dashboard}/>
       <Route path='/CreateGroups' component={GroupsCreation}/>
