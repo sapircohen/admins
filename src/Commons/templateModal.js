@@ -24,7 +24,7 @@ export default class TemplateModal extends React.Component{
     }
     changeMaximum=(evt)=>{this.setState({maximum:parseInt(evt.target.value)})}
     changeMinimum=(evt)=>{this.setState({minimum:parseInt(evt.target.value)})}
-    changeAlert = (evt)=>{this.setState({alertText:parseInt(evt.target.value)})}
+    changeAlert = (evt)=>{this.setState({alertText:evt.target.value})}
     render(){
     return (
         <div>

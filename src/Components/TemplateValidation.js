@@ -66,6 +66,7 @@ const TemplateValidation =(props)=>{
             setFacultyList([]);
             setMajorList([]);
             setCoursesList([]);
+            setCourse('');
         }
     }
     const getDepartments = (faculatyName)=>{
@@ -87,7 +88,7 @@ const TemplateValidation =(props)=>{
             setDepartmentList([]);
             setMajorList([]); 
             setCoursesList([]);
-       
+            setCourse('');
         }
     }
     const getMajors =  (departmentName)=>{
@@ -107,6 +108,7 @@ const TemplateValidation =(props)=>{
         else{
             setMajorList([]);
             setCoursesList([]);
+            setCourse('');
         }
     }
     const getCourses =  (majorName)=>{
@@ -124,13 +126,17 @@ const TemplateValidation =(props)=>{
         }
         else{
             setCoursesList([]);
+            setCourse('');
+
         }
     }
     const generateTemplateConfig=(courseName)=>{
+        setCourse(courseName);
         if(courseName!=='בחר'){
             const ref = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(courseName);
             ref.once("value",(snapshot)=>{
                 setCourse(snapshot.key);
+                console.log(snapshot.key)
                 snapshot.val().TemplateConfig?setTemplate(snapshot.val().TemplateConfig):alert("Template config not found.");
             })
         }
@@ -232,8 +238,8 @@ const TemplateValidation =(props)=>{
                 else validators.push(val.val());
             })
         }).then(()=>{
-            const ref1 = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(course);
-            ref1.update({"TemplateConfig":validators});
+            const ref1 = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(course)
+            ref1.update({"TemplateConfig":validators})
         })
         
     }
@@ -249,9 +255,9 @@ const TemplateValidation =(props)=>{
                 <Select changedInput={selectedInputChange} list={majorList} title={titles.MajorTitle}/>
                 <Select changedInput={selectedInputChange} list={coursesList} title={titles.CourseTitle}/>
             </div>
-            {course!==''&&
+            {(course!=='' && course!=='בחר')&&
             <div style={{border:'solid 1px',padding:15,margin:60,backgroundColor:'#fff',boxShadow:'5px 10px #888888'}}>
-                    <DatatablePage paging={true} data={data}/>
+                <DatatablePage paging={true} data={data}/>
             </div>
             }
         </div>
