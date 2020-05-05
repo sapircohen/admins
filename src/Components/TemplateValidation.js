@@ -127,7 +127,6 @@ const TemplateValidation =(props)=>{
         else{
             setCoursesList([]);
             setCourse('');
-
         }
     }
     const generateTemplateConfig=(courseName)=>{
