@@ -61,7 +61,10 @@ render() {
                     <Nav.Link href="#/BigAdminDashboard">דשבורד</Nav.Link>
                   </MDBNavItem>
                   <MDBNavItem >
-                    <Nav.Link href="#/InstitudePage">עריכת מידע</Nav.Link>
+                    <Nav.Link href="#/InstitudePage">עריכת וצפייה במידע</Nav.Link>
+                  </MDBNavItem>
+                  <MDBNavItem >
+                    <Nav.Link href="#/TemplateValidation">עריכת ולדיציות</Nav.Link>
                   </MDBNavItem>
                   <MDBNavItem >
                     <Nav.Link href="#/CreateGroups">פתיחת קבוצות</Nav.Link>

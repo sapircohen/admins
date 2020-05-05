@@ -6,6 +6,7 @@ import AdminPage from './Components/AdminPage';
 import ChangeData from './Components/ChangeDataScreen';
 import InstitudePage from './Components/Institude';
 import GroupsCreation from './Components/CreateGroups';
+import TemplateValidation from './Components/TemplateValidation';
 
 //test and prod enviorments
 import firebase from 'firebase';
@@ -28,12 +29,13 @@ function App(props) {
     <Switch location={props.location}>
       <Route path='/' exact component={LoginPage}/>
       <Route path='/projectsData' component={AdminPage}/>
-      <Route path='/projectsChangeData' component={ChangeData}/>
+      <Route path='/ChangeData' component={ChangeData}/>
       <Route path='/InstitudePage' component={InstitudePage}/>
       <Route path='/BigAdminDashboard' component={Dashboard}/>
       <Route path='/CreateGroups' component={GroupsCreation}/>
       <Route path='/smallAdminDashboard' component={SmallDashboard}/>
       <Route path='/Messeges' component={Messeges}/>
+      <Route path='/TemplateValidation' component={TemplateValidation}/>
     </Switch>
   );
 }
