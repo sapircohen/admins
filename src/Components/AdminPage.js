@@ -4,12 +4,12 @@ import firebase from 'firebase';
 import NavbarProj from './NavBar';
 import Loader from 'react-loader-spinner';
 import Button from 'react-bootstrap/Button';
-import { FaEye } from "react-icons/fa";
+import { FaEye, FaBreadSlice } from "react-icons/fa";
 import ToggleProject from '../Commons/toggle';
 import SAlert from '../Commons/SAlert';
 import BDatatable from './BootstrapDatatable';
 import { isArray } from 'util';
-import ModalExample1,{Vt6} from './ModalExample';
+import ModalExample1,{Vt6,Vt7} from './ModalExample';
 
 //consts
 
@@ -28,6 +28,7 @@ export default class AdminPage extends React.Component{
         isApproved:true,
         department:'',
         faculty:'',
+        viewModal:null
     }
     componentDidMount(){
         projectsData=[];
@@ -39,7 +40,17 @@ export default class AdminPage extends React.Component{
         })
     }
     OpenModal = (proj)=>{
-        this.setState({OpenModal:true,projectDetails:proj})
+        this.setState({OpenModal:true,projectDetails:proj},()=>{
+            if(this.state.projectDetails.templateView==='vt6') {
+                this.setState({viewModal:<Vt6 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>})
+            }
+            else if(this.state.projectDetails.templateView==='vt7') {
+                this.setState({viewModal:<Vt7 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>})
+            }
+            else {
+                this.setState({viewModal:<ModalExample1 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>})
+            }
+        })
     }
     closePreview = ()=>this.setState({OpenModal:false})
     ChangeApproval = (projectKey,newState)=>{
@@ -141,11 +152,19 @@ export default class AdminPage extends React.Component{
         return(
             <div>
                 <SAlert alertIcon={this.state.alertIcon} CloseAlert={this.CloseAlert} show={this.state.alertShow} title={this.state.alertTitle} text={this.state.alertText}/>
-                {
-                    this.state.projectDetails.templateView==='vt6'?
-                    <Vt6 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>:
-                    <ModalExample1 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
-                }
+                {(()=>{
+                    switch (this.state.projectDetails.templateView) {
+                        case 'vt6':
+                            return <Vt6 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
+                            break;
+                        case 'vt7':
+                            return <Vt7 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
+                            break;
+                        default:
+                            return <ModalExample1 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
+                            break;
+                    }
+                })()}
                 <NavbarProj/>
                 <BDatatable data={this.state.data} key={'Year'} />
             </div>
