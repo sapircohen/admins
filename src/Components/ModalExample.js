@@ -962,7 +962,7 @@ export class Vt7 extends React.Component{
                     </Col>
                     }
                     
-                    {(this.props.projectDetails.ProjectConclusion||this.props.projectDetails.ProjectFindings)&&
+                    {(this.props.projectDetails.ProjectConclusion||this.props.projectDetails.ProjectFindings||this.props.projectDetails.Sources)&&
                     <Col className="Box" style={{marginTop:'2%',textAlign:'center'}}>
                         <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                             <Col>
@@ -977,6 +977,11 @@ export class Vt7 extends React.Component{
                                     </Col>}
                                 </Row>
                             </Col>
+                            {this.props.projectDetails.Sources&&
+                            <Col xs="12">
+                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Sources} Title="מקורות" Icon={GoBook} />
+                                <br/>
+                            </Col>}
                         </Row>
                     </Col>}
                     <br/>

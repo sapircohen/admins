@@ -255,7 +255,7 @@ const TemplateValidation =(props)=>{
             </div>
             {(course!=='' && course!=='בחר')&&
             <div style={{border:'solid 1px',padding:15,margin:60,backgroundColor:'#fff',boxShadow:'5px 10px #888888'}}>
-                <DatatablePage paging={true} data={data}/>
+                <DatatablePage paging={false} data={data}/>
             </div>
             }
         </div>
