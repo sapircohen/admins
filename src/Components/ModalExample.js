@@ -802,7 +802,7 @@ export class Vt6 extends React.Component{
 export class Vt7 extends React.Component{
     render(){  
         return (
-            <Modal style={{backgroundColor:'transparent',fontFamily:'Calibri'}} onHide={this.props.close} show={this.props.openPreview} size="xl" aria-labelledby="contained-modal-title-vcenter">
+            <Modal style={{backgroundColor:'transparent',fontFamily:'Calibri'}} onHide={this.props.close} show={this.props.openpreview} size="xl" aria-labelledby="contained-modal-title-vcenter">
               <Modal.Header  style={{margin:'0px auto'}} closeButton>
                 <Modal.Title style={{textAlign:'right',fontFamily:'Rubik, sans-serif'}}>
                     {
@@ -916,15 +916,13 @@ export class Vt7 extends React.Component{
                         </Col>
                     </Row>
                     <Row style={{textAlign:'center',marginTop:'4%'}}>
-                        <Col></Col>
                         <Col style={{direction:'rtl'}}>
                         {/* project small summery */}
                         {
                         this.props.projectDetails.CDescription &&
-                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.CDescription} Icon={''} Title="רקע תיאורתי ומדעי"/>
+                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.CDescription} Title="רקע תיאורטי ומדעי"/>
                         }
                         </Col>
-                        <Col></Col>
                     </Row>
                     {/* project summery */}
                     {

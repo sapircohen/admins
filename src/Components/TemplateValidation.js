@@ -136,7 +136,7 @@ const TemplateValidation =(props)=>{
             ref.once("value",(snapshot)=>{
                 setCourse(snapshot.key);
                 console.log(snapshot.key)
-                snapshot.val().TemplateConfig?setTemplate(snapshot.val().TemplateConfig):alert("Template config not found.");
+                snapshot.val().TemplateConfig?setTemplate([...snapshot.val().TemplateConfig]):alert("Template config not found.");
             })
         }
     }
@@ -169,7 +169,7 @@ const TemplateValidation =(props)=>{
                 DisplayName:validator.DisplayName,
                 FieldType:validator.fieldType,
                 isMandatory:validator.isMandatory?'כן':'לא',
-                EditValidator:<Button onClick={()=>changeValidator(validator)} variant="warning">עריכה</Button>
+                EditValidator:<Button key={key} onClick={()=>changeValidator(validator)} variant="warning">עריכה</Button>
             };
             rows.push(r);
             
@@ -238,6 +238,8 @@ const TemplateValidation =(props)=>{
         }).then(()=>{
             const ref1 = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(course)
             ref1.update({"TemplateConfig":validators})
+        }).then(()=>{
+            generateTemplateConfig(course);
         })
         
     }
