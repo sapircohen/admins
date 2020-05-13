@@ -253,6 +253,8 @@ export default class GroupsCreation extends React.Component{
                 Major: this.state.major,
                 Password: parseInt(this.state.password),
             }
+            console.log(project);
+            
             rootRef.child(project.GroupName).set(project)
             .then(()=>{
                 this.setState({
