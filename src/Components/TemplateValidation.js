@@ -222,10 +222,12 @@ const TemplateValidation =(props)=>{
     useEffect(()=>{GetData()},[template])
     const saveData=(validator,maximum,minimum,isMandatory,alertText)=>{
         let newValidator = validator;
-        newValidator.minimum  = minimum===''?validator.minimum:minimum;
-        newValidator.maximum = maximum===''?validator.maximum:maximum;
-        newValidator.isMandatory = isMandatory===''?validator.isMandatory:isMandatory;
-        newValidator.alertText = alertText===''?validator.alertText:alertText;
+        if(newValidator.minimum || newValidator.maximum){
+            newValidator.minimum = minimum==='none'?validator.minimum:minimum;
+            newValidator.maximum = maximum==='none'?validator.maximum:maximum;
+        }
+        newValidator.isMandatory = isMandatory==='none'?validator.isMandatory:isMandatory;
+        newValidator.alertText = alertText==='none'?validator.alertText:alertText;
         let validators= [];
         const ref = firebase.database().ref('Data').child(institute).child('Faculties').child(faculty).child('Departments').child(department).child('Experties').child(major).child('Courses').child(course).child('TemplateConfig');
         ref.once("value",(snapshot)=>{

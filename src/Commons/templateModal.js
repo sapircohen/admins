@@ -1,70 +1,72 @@
-import React from 'react';
-import {Button,Dialog,DialogActions,DialogContent,DialogTitle} from '@material-ui/core';
-import {Form,Row,Col} from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import {Form,Row,Col,Modal,Button} from 'react-bootstrap';
 
-export default class TemplateModal extends React.Component{
-    state={
-        isMandatory:'',
-        maximum:'',
-        minimum:'',
-        alertText:''
-    }
-    componentDidMount(){
-        console.log(this.props.validator)
-        if(this.props.validator===undefined){
-            this.props.handleClose();
+const TemplateModal2 = (props) => {
+    const [isMandatory,setIsMandatory] = useState('none');
+    const [maximum,setMaximum] = useState('none');
+    const [minimum,setMinimum] = useState('none');
+    const [alertText,setAlertText] = useState('none');
+    const {validator,open} = props;
+
+    useEffect(()=>{
+        console.log(props.validator)
+        if(props.validator===undefined){
+            props.handleClose();
         }
+    },[])
+    const close =  ()=>{
+        props.handleClose();
     }
-    SaveData=()=>{
-        this.props.saveData(this.props.validator,this.state.maximum,this.state.minimum,this.state.isMandatory,this.state.alertText);
-        this.props.handleClose();
+    const saveData=()=>{
+        props.saveData(validator,maximum,minimum,isMandatory,alertText);
+        props.handleClose();
     }
-    changeMandatoryField=(evt)=>{
-        this.setState({isMandatory:evt.target.checked},()=>console.log(this.state.isMandatory))
+    const changeMandatoryField=(evt)=>{
+        console.log(evt.target.checked);
+        setIsMandatory(evt.target.checked);
     }
-    changeMaximum=(evt)=>{this.setState({maximum:parseInt(evt.target.value)})}
-    changeMinimum=(evt)=>{this.setState({minimum:parseInt(evt.target.value)})}
-    changeAlert = (evt)=>{this.setState({alertText:evt.target.value})}
-    render(){
-    return (
-        <div>
-        <Dialog fullWidth="md" keepMounted open={this.props.open} onClose={this.props.handleClose} aria-labelledby="form-dialog-title">
-            <DialogTitle style={{textAlign:'right'}} id="form-dialog-title">{this.props.title}</DialogTitle>
-            <DialogContent>
-                <Form.Group>
-                    <Form.Check defaultChecked={this.props.validator.isMandatory} onChange={this.changeMandatoryField} type="checkbox" label="Mandatory? " />
+    const changeMaximum=(evt)=>{setMaximum(parseInt(evt.target.value))}
+    const changeMinimum=(evt)=>{setMinimum(parseInt(evt.target.value))}
+    const changeAlert=(evt)=>{setAlertText(evt.target.value)}
+    return ( 
+        <Modal size="md" show={open} onHide={close}>
+            <Modal.Header closeButton>
+                <Modal.Title>{validator.DisplayName}</Modal.Title>
+            </Modal.Header>
+
+            <Modal.Body>
+            <Form.Group>
+            <Form.Check defaultChecked={validator.isMandatory} onChange={changeMandatoryField} type="checkbox" label="Mandatory? " />
                 </Form.Group>
-                {this.props.validator.maximum&&
+                {(validator.maximum || validator.maximum===0)&&
                 <Form.Group as={Row}>
                     <Form.Label column sm="4">Maximum</Form.Label>
                     <Col sm="8">
-                        <Form.Control defaultValue={this.props.validator.maximum} onChange={this.changeMaximum} type="number"/>
+                        <Form.Control defaultValue={validator.maximum} onChange={changeMaximum} type="number"/>
                     </Col>
                 </Form.Group>}
-                {this.props.validator.minimum&&
+                {(validator.minimum || validator.minimum===0)&&
                 <Form.Group as={Row}>
                     <Form.Label column sm="4">Minimum</Form.Label>
                     <Col sm="8">
-                        <Form.Control defaultValue={this.props.validator.minimum} onChange={this.changeMinimum} type="number"/>
+                        <Form.Control defaultValue={validator.minimum} onChange={changeMinimum} type="number"/>
                     </Col>
                 </Form.Group>}
-                {this.props.validator.alertText&&
+                {validator.alertText&&
                 <Form.Group as={Row}>
-                    <Form.Label column sm="4">alertText</Form.Label>
+                    <Form.Label column sm="4">alert Text</Form.Label>
                     <Col sm="8">
-                        <Form.Control defaultValue={this.props.validator.alertText} onChange={this.changeAlert} type="text"/>
+                        <Form.Control defaultValue={validator.alertText} onChange={changeAlert} type="text"/>
                     </Col>
                 </Form.Group>}
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={this.props.handleClose} color="primary">
-                    ביטול
-                </Button>
-                <Button onClick={this.SaveData} color="primary">
-                    שמירה
-                </Button>
-            </DialogActions>
-        </Dialog>
-        </div>
-    );}
+            </Modal.Body>
+
+            <Modal.Footer>
+                <Button onClick={close} variant="secondary">Close</Button>
+                <Button onClick={saveData} variant="primary">Save changes</Button>
+            </Modal.Footer>
+        </Modal>
+     );
 }
+ 
+export default TemplateModal2;
