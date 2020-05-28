@@ -217,14 +217,14 @@ export default class ModalExample1 extends React.Component{
                     {/* project summery */}
                     {
                     this.props.projectDetails.ProjectSummery &&
-                    <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectSummery} Title="תקציר הפרויקט" Icon={IoMdSkipForward} />
+                    <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectSummery} Title="תקציר הפרויקט" />
                     }
                     {(this.props.projectDetails.Challenges||this.props.projectDetails.Comments||this.props.projectDetails.PDescription)&&
                     <Col className="Box" style={{marginTop:'2%',textAlign:'center'}}>
                         <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                             {this.props.projectDetails.PDescription&&
                             <Col xs="12" sm={this.props.projectDetails.Challenges?"6":"12"}>
-                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.PDescription} Title="תיאור הפרויקט" Icon={GoBook} />
+                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.PDescription} Title="תיאור הפרויקט" />
                             </Col>}
                             {(this.props.projectDetails.Challenges||this.props.projectDetails.Comments)&&
                             <Col xs="12" sm={this.props.projectDetails.PDescription?"6":"12"}>
@@ -232,11 +232,11 @@ export default class ModalExample1 extends React.Component{
                                     <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                                         {this.props.projectDetails.Challenges&&
                                         <Col dir="rtl" >
-                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Challenges} Title="אתגרי הפרויקט" Icon={IoIosRocket} />
+                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Challenges} Title="אתגרי הפרויקט" />
                                         </Col>}
                                         {this.props.projectDetails.Comments &&
                                         <Col dir="rtl" >
-                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Comments} Title="הערות" Icon={IoIosContacts} />
+                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Comments} Title="הערות" />
                                         </Col>}
                                     </Row>
                                 </Col>
@@ -252,11 +252,11 @@ export default class ModalExample1 extends React.Component{
                                 <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                                     {this.props.projectDetails.ProjectGoal &&
                                     <Col dir="rtl" >
-                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectGoal} Title="מטרת הפרויקט" Icon={GiCrosshair} />
+                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectGoal} Title="מטרת הפרויקט" />
                                     </Col>}
                                     {this.props.projectDetails.ProjectNeed &&
                                     <Col dir="rtl" >
-                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectNeed} Title="הבעיה/צורך" Icon={FiFlag} />
+                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectNeed} Title="הבעיה/צורך" />
                                     </Col>}
                                 </Row>
                             </Col>
@@ -264,24 +264,24 @@ export default class ModalExample1 extends React.Component{
                                 <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                                     {this.props.projectDetails.projectFindings &&
                                     <Col dir="rtl" >
-                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.projectFindings} Title="ממצאים" Icon={FiEdit2} />
+                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.projectFindings} Title="ממצאים" />
                                     </Col>}
                                     {this.props.projectDetails.projectSolution &&
                                     <Col dir="rtl" >
-                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.projectSolution} Title="פתרון" Icon={FiAward} />
+                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.projectSolution} Title="פתרון" />
                                     </Col>}
                                 </Row>
                             </Col>
                             <Col>
                                 {this.props.projectDetails.ProjectConclusion &&
-                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectConclusion} Title="מסקנות" Icon={GoBook} />}                            
+                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectConclusion} Title="מסקנות" />}                            
                             </Col>
                         </Row>
                     </Col>}
                     {/* project industrial partner */}
                     {
                     this.props.projectDetails.PartnerDescription &&
-                    <PreviewParagraph Paragraph={this.props.projectDetails.PartnerDescription} Title="שותף תעשייתי" Icon={IoIosContacts} />
+                    <PreviewParagraph Paragraph={this.props.projectDetails.PartnerDescription} Title="שותף תעשייתי" />
                     }
                     
                     {/* project goals + modules (for IS project) */}
@@ -675,8 +675,8 @@ export class Vt6 extends React.Component{
                     }
                     {/* project summery */}
                     {
-                    this.props.projectDetails.ProjectSummery &&
-                    <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Summery} Title="תקציר הבעיה" Icon={IoMdSkipForward} />
+                    this.props.projectDetails.Summery &&
+                    <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Summery} Title="תקציר הבעיה"/>
                     }
 
                     {(this.props.projectDetails.Goals||this.props.projectDetails.Rationale||this.props.projectDetails.PDescription)&&
@@ -684,19 +684,19 @@ export class Vt6 extends React.Component{
                         <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                             {this.props.projectDetails.PDescription&&
                             <Col xs="12">
-                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.PDescription} Title="תיאור ההתערבות" Icon={GoBook} />
+                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.PDescription} Title="תיאור ההתערבות"/>
                             </Col>}
                             {(this.props.projectDetails.Goals||this.props.projectDetails.Rationale)&&
                             <Col xs="12">
                                 <Col>
                                     <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
-                                        {this.props.projectDetails.Goals&&
+                                        {this.props.projectDetails.Rationale&&
                                         <Col dir="rtl" >
-                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Goals} Title="רציונל ההתערבות" Icon={IoIosRocket} />
+                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Rationale} Title="רציונל ההתערבות"/>
                                         </Col>}
-                                        {this.props.projectDetails.Rationale &&
+                                        {this.props.projectDetails.ProjectGoal &&
                                         <Col dir="rtl" >
-                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Rationale} Title="מטרות ההתערבות" Icon={IoIosContacts} />
+                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectGoal} Title="מטרות ההתערבות"/>
                                         </Col>}
                                     </Row>
                                 </Col>
@@ -713,11 +713,11 @@ export class Vt6 extends React.Component{
                                 <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                                     {this.props.projectDetails.Recommendations &&
                                     <Col dir="rtl" >
-                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Recommendations} Title="מסקנות והמלצות" Icon={GiCrosshair} />
+                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Recommendations} Title="מסקנות והמלצות"/>
                                     </Col>}
                                     {this.props.projectDetails.Sources &&
                                     <Col dir="rtl" >
-                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Sources} Title="מקורות" Icon={FiFlag} />
+                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Sources} Title="מקורות"/>
                                     </Col>}
                                 </Row>
                             </Col>
@@ -926,8 +926,8 @@ export class Vt7 extends React.Component{
                     </Row>
                     {/* project summery */}
                     {
-                    this.props.projectDetails.ProjectSummery &&
-                    <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Summery} Title="תקציר" Icon={IoMdSkipForward} />
+                    this.props.projectDetails.Summery &&
+                    <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Summery} Title="תקציר" />
                     }
                     <Divider style={{margin:'0px auto',marginTop:'6px',width:'80%',color:'#444'}}/>
                     
@@ -936,7 +936,7 @@ export class Vt7 extends React.Component{
                         <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                             {this.props.projectDetails.PDescription&&
                             <Col xs="12">
-                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.PDescription} Title="שאלות המחקר" Icon={GoBook} />
+                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.PDescription} Title="שאלות המחקר" />
                                 <br/>
                             </Col>}
                             {(this.props.projectDetails.ProjectGoal||this.props.projectDetails.ProjectNeed)&&
@@ -945,11 +945,11 @@ export class Vt7 extends React.Component{
                                     <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                                         {this.props.projectDetails.ProjectGoal&&
                                         <Col dir="rtl" >
-                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectGoal} Title="תיאור מטרת המחקר" Icon={IoIosRocket} />
+                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectGoal} Title="תיאור מטרת המחקר" />
                                         </Col>}
                                         {this.props.projectDetails.ProjectNeed &&
                                         <Col dir="rtl" >
-                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectNeed} Title="שיטה" Icon={IoIosContacts} />
+                                            <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectNeed} Title="שיטה" />
                                         </Col>}
                                     </Row>
                                 </Col>
@@ -967,17 +967,17 @@ export class Vt7 extends React.Component{
                                 <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                                     {this.props.projectDetails.ProjectConclusion &&
                                     <Col dir="rtl" >
-                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectConclusion} Title="דיון ומסקנות" Icon={GiCrosshair} />
+                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectConclusion} Title="דיון ומסקנות" />
                                     </Col>}
                                     {this.props.projectDetails.ProjectFindings &&
                                     <Col dir="rtl" >
-                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectFindings} Title="ממצאים" Icon={FiFlag} />
+                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectFindings} Title="ממצאים"  />
                                     </Col>}
                                 </Row>
                             </Col>
                             {this.props.projectDetails.Sources&&
                             <Col xs="12">
-                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Sources} Title="מקורות" Icon={GoBook} />
+                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Sources} Title="מקורות"  />
                                 <br/>
                             </Col>}
                         </Row>
