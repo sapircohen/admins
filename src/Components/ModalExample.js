@@ -492,7 +492,9 @@ export default class ModalExample1 extends React.Component{
 }
 
 export class Vt6 extends React.Component{
-
+    componentDidMount(){
+        console.log(this.props.projectDetails)
+    }
     render(){  
         return (
             <Modal style={{backgroundColor:'transparent',fontFamily:'Calibri'}} onHide={this.props.close} show={this.props.openpreview} size="xl" aria-labelledby="contained-modal-title-vcenter">
@@ -679,7 +681,7 @@ export class Vt6 extends React.Component{
                     <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Summery} Title="תקציר הבעיה"/>
                     }
 
-                    {(this.props.projectDetails.Goals||this.props.projectDetails.Rationale||this.props.projectDetails.PDescription)&&
+                    {(this.props.projectDetails.ProjectGoal||this.props.projectDetails.Goals||this.props.projectDetails.Rationale||this.props.projectDetails.PDescription)&&
                     <Col className="Box" style={{marginTop:'2%',textAlign:'center'}}>
                         <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                             {this.props.projectDetails.PDescription&&
@@ -698,6 +700,12 @@ export class Vt6 extends React.Component{
                                         <Col dir="rtl" >
                                             <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectGoal} Title="מטרות ההתערבות"/>
                                         </Col>}
+                                        {
+                                            this.props.projectDetails.Goals &&
+                                            <Col dir="rtl" >
+                                                <RichTextPreviewParagraph Paragraph={this.props.projectDetails.Goals} Title="מטרות ההתערבות"/>
+                                            </Col>
+                                        }
                                     </Row>
                                 </Col>
                             </Col>}
@@ -960,7 +968,7 @@ export class Vt7 extends React.Component{
                     </Col>
                     }
                     
-                    {(this.props.projectDetails.ProjectConclusion||this.props.projectDetails.ProjectFindings||this.props.projectDetails.Sources)&&
+                    {(this.props.projectDetails.ProjectConclusion||this.props.projectDetails.projectFindings||this.props.projectDetails.Sources)&&
                     <Col className="Box" style={{marginTop:'2%',textAlign:'center'}}>
                         <Row style={{textAlign:'center'}} dir="rtl" className="show-grid">
                             <Col>
@@ -969,9 +977,9 @@ export class Vt7 extends React.Component{
                                     <Col dir="rtl" >
                                         <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectConclusion} Title="דיון ומסקנות" />
                                     </Col>}
-                                    {this.props.projectDetails.ProjectFindings &&
+                                    {this.props.projectDetails.projectFindings &&
                                     <Col dir="rtl" >
-                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.ProjectFindings} Title="ממצאים"  />
+                                        <RichTextPreviewParagraph Paragraph={this.props.projectDetails.projectFindings} Title="ממצאים"  />
                                     </Col>}
                                 </Row>
                             </Col>

@@ -109,14 +109,14 @@ const styles = theme => ({
             faculty.child('Departments').forEach((dep)=>{
                 const admins =dep.val().Admins;
                 if (admins!==undefined) {
-                    //console.log(admins)
-                    dep.child('Admins').forEach(async (admin)=>{
-                        if (this.state.password === admin.val().Password && this.state.admin === admin.val().Name) {
+                    console.log(admins)
+                    admins.forEach(async (admin)=>{
+                        if (this.state.password === admin.Password && this.state.admin === admin.Name) {
                             logged=true;
                             await localStorage.setItem('department', JSON.stringify(dep.val().Name));
                             await localStorage.setItem('GoogleDriveLink', JSON.stringify(dep.val().Groups));
                             await localStorage.setItem('faculty',JSON.stringify(faculty.val().Name));
-                            await localStorage.setItem('adminInfo',JSON.stringify(admin.val()));
+                            await localStorage.setItem('adminInfo',JSON.stringify(admin));
                             history.push('/projectsData')
                         }
                     })
