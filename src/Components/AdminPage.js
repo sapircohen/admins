@@ -9,7 +9,7 @@ import ToggleProject from '../Commons/toggle';
 import SAlert from '../Commons/SAlert';
 import BDatatable from './BootstrapDatatable';
 import { isArray } from 'util';
-import ModalExample1,{Vt6,Vt7} from './ModalExample';
+import ModalExample1,{Vt6,Vt7,Vt8} from './ModalExample';
 
 //consts
 
@@ -159,6 +159,9 @@ export default class AdminPage extends React.Component{
                             break;
                         case 'vt7':
                             return <Vt7 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
+                            break;
+                        case 'vt8':
+                            return <Vt8 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
                             break;
                         default:
                             return <ModalExample1 openpreview={this.state.OpenModal} close={this.closePreview}  projectDetails={this.state.projectDetails}/>
