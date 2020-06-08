@@ -1069,7 +1069,7 @@ export class Vt7 extends React.Component{
 export class Vt8 extends React.Component{
     render(){  
         return (
-            <Modal style={{backgroundColor:'transparent',fontFamily:'Calibri'}} onHide={this.props.close} show={this.props.openPreview} size="xl" aria-labelledby="contained-modal-title-vcenter">
+            <Modal style={{backgroundColor:'transparent',fontFamily:'Calibri'}} onHide={this.props.close} show={this.props.openpreview} size="xl" aria-labelledby="contained-modal-title-vcenter">
               <Modal.Header  style={{margin:'0px auto'}} closeButton>
                 <Modal.Title style={{textAlign:'right',fontFamily:'Rubik, sans-serif'}}>
                     {
@@ -1258,35 +1258,6 @@ export class Vt8 extends React.Component{
                         <Col xs="0" sm="0" md="1"></Col>
                     </Row>}
                     
-                    {/* project screenshots (for IS project) */}
-                    {
-                        (this.props.projectDetails.ScreenShots && this.props.projectDetails.ScreenShots.length!==0)&&
-                        <Col className="Box"  style={{marginTop:'4%',textAlign:'center'}}>
-                            <Col style={{textAlign:'center',fontFamily:'Calibri'}} sm="12">
-                                <h3>תמונות מסך <FaCameraRetro size={20}/></h3>
-                            </Col>
-                            <Row style={{marginTop:'4%',textAlign:'center'}} dir="rtl" className="show-grid">
-                                <Col style={{textAlign:'right'}} sm="2"></Col>
-                                <Col sm="8" style={{textAlign:'center',height:'auto'}}>
-                                    {/* <ImageGallery showPlayButton={true}  slideDuration={1000} items={this.state.gallery}/> */}
-                                    <Swiper {...params}>
-                                        {this.props.projectDetails.ScreenShots.map((image,key)=>
-                                            <div key={key} className="swiper-slide">
-                                                <img
-                                                    style={{height:'auto',maxHeight: '500px'}}
-                                                    className="swiper-slide"
-                                                    src={image}
-                                                    alt="screen shot preview"
-                                                />
-                                            </div>
-                                        )}
-                                    </Swiper>
-
-                                </Col>
-                                <Col style={{textAlign:'right'}} sm="2"></Col>
-                            </Row>
-                        </Col>
-                    }
                     <br/>
                     {/* project video */}
                     {
