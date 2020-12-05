@@ -1,11 +1,13 @@
+.ToggleClass button {
+  margin-right: 5px;
+  font-size: 12px;
+}
 
-.ToggleClass button{
-    margin-right: 5px;
-    font-size: 12px;
+div #search-bar-0 {
+  width: 500px;
 }
-div #search-bar-0{
-    width: 500px;
+
+div #search-bar-0:focus {
+  background-color: #BFDCD8;
 }
-div #search-bar-0:focus{
-    background-color:#BFDCD8;
-}
+/*# sourceMappingURL=toggle.css.map */

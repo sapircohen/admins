@@ -1,7 +1,7 @@
 import React from 'react';
 import {Navbar,Nav} from 'react-bootstrap';
 import {FiFacebook,FiLinkedin,FiInstagram,FiYoutube} from 'react-icons/fi';
-import {home} from '../assests/image'
+import {home} from '../assests/images'
 //css
 import '../css/previewStyle.css';
 const Header = (props)=>{
