@@ -30,7 +30,7 @@
     "recharts": "^1.8.5",
     "semantic-ui-react": "^0.88.1",
     "sweetalert-react": "^0.4.11",
-    "swiper": "^5.2.0",
+    "swiper": "^6.5.1",
     "xlsx": "^0.15.1"
   },
   "scripts": {
