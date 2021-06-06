@@ -25,7 +25,7 @@ export default class AdminPage extends React.Component{
         isReady:true,
         OpenModal:false,
         projectDetails:'',
-        isApproved:true,
+        isApproved:false,
         department:'',
         faculty:'',
         viewModal:null
